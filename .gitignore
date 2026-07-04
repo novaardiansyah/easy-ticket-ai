@@ -35,5 +35,6 @@ boost.json
 CLAUDE.md
 AGENTS.md
 Makefile
+setup.sh
 
 /public/template/**/*.html
