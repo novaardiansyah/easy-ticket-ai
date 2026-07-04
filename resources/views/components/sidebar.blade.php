@@ -59,13 +59,13 @@
           </a>
           <ul class="nav nav-treeview">
             <li class="nav-item">
-              <a href="./examples/login.html" class="nav-link">
+              <a href="{{ route('login') }}" class="nav-link">
                 <i class="nav-icon bi bi-arrow-right-short"></i>
                 <p>Login</p>
               </a>
             </li>
             <li class="nav-item">
-              <a href="./examples/register.html" class="nav-link">
+              <a href="#" class="nav-link">
                 <i class="nav-icon bi bi-arrow-right-short"></i>
                 <p>Register</p>
               </a>

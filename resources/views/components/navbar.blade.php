@@ -94,7 +94,7 @@
             class="user-image rounded-circle shadow"
             alt="User Image"
           />
-          <span class="d-none d-md-inline">Nova Ardiansyah</span>
+          <span class="d-none d-md-inline">{{ auth()->user()->name }}</span>
         </a>
         <ul class="dropdown-menu dropdown-menu-lg dropdown-menu-end">
           <li class="user-header text-bg-primary">
@@ -104,7 +104,7 @@
               alt="User Image"
             />
             <p>
-              Nova Ardiansyah
+              {{ auth()->user()->name }}
               <small>Super Administrator</small>
             </p>
           </li>
@@ -117,10 +117,13 @@
 							<i class="bi bi-gear-fill me-2"></i>
 							Settings
 						</a>
-						<a href="#" class="dropdown-item">
+						<a href="#" class="dropdown-item" onclick="event.preventDefault(); document.getElementById('logout-form').submit();">
 							<i class="bi bi-box-arrow-right me-2"></i>
 							Logout
 						</a>
+						<form id="logout-form" action="{{ route('logout') }}" method="POST" class="d-none">
+							@csrf
+						</form>
           </li>
         </ul>
       </li>
