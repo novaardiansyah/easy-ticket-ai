@@ -3,7 +3,7 @@
   <head>
     @include('components.head')
   </head>
-  <body class="layout-fixed sidebar-expand-lg bg-body-tertiary">
+  <body class="layout-fixed sidebar-expand-lg sidebar-mini sidebar-collapse bg-body-tertiary">
     <div class="app-wrapper">
       @include('components.navbar')
       @include('components.sidebar')

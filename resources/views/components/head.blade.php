@@ -1,5 +1,5 @@
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-<title>@yield('title', 'AdminLTE v4 | Dashboard')</title>
+<title>@yield('title', 'Dashboard')</title>
 
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes" />
 <meta name="color-scheme" content="light dark" />
@@ -42,17 +42,3 @@
 />
 
 <link rel="stylesheet" href="{{ template('css/adminlte.css') }}" />
-
-<link
-  rel="stylesheet"
-  href="https://cdn.jsdelivr.net/npm/apexcharts@3.37.1/dist/apexcharts.css"
-  integrity="sha256-4MX+61mt9NVvvuPjUWdUdyfZfxSB1/Rf9WtqRHgG5S0="
-  crossorigin="anonymous"
-/>
-
-<link
-  rel="stylesheet"
-  href="https://cdn.jsdelivr.net/npm/jsvectormap@1.5.3/dist/css/jsvectormap.min.css"
-  integrity="sha256-+uGLJmmTKOqBr+2E6KDYs/NRsHxSkONXFHUL0fy2O/4="
-  crossorigin="anonymous"
-/>

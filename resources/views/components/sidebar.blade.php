@@ -12,16 +12,6 @@
 
   <div class="sidebar-wrapper">
     <nav class="mt-2">
-      <div class="px-3 pb-2">
-        <a
-          href="./docs/introduction.html"
-          class="btn btn-sm btn-outline-light w-100 d-flex align-items-center justify-content-center gap-2"
-        >
-          <i class="bi bi-book" aria-hidden="true"></i>
-          View documentation
-        </a>
-      </div>
-
       <ul
         class="nav sidebar-menu flex-column"
         data-lte-toggle="treeview"
@@ -30,7 +20,7 @@
         data-accordion="false"
         id="navigation"
       >
-        <li class="nav-item menu-open">
+        {{-- <li class="nav-item menu-open">
           <a href="#" class="nav-link active">
             <i class="nav-icon bi bi-speedometer"></i>
             <p>
@@ -46,9 +36,18 @@
               </a>
             </li>
           </ul>
-        </li>
+        </li> --}}
 
-        <li class="nav-header">PAGES</li>
+				<li class="nav-header">Main Menu</li>
+
+				<li class="nav-item">
+					<a href="{{ route('home') }}" class="nav-link">
+						<i class="nav-icon bi bi-palette"></i>
+						<p>Dashboard</p>
+					</a>
+				</li>
+
+        <li class="nav-header">Authentication</li>
 
         <li class="nav-item">
           <a href="#" class="nav-link">
@@ -61,13 +60,13 @@
           <ul class="nav nav-treeview">
             <li class="nav-item">
               <a href="./examples/login.html" class="nav-link">
-                <i class="nav-icon bi bi-circle"></i>
+                <i class="nav-icon bi bi-arrow-right-short"></i>
                 <p>Login</p>
               </a>
             </li>
             <li class="nav-item">
               <a href="./examples/register.html" class="nav-link">
-                <i class="nav-icon bi bi-circle"></i>
+                <i class="nav-icon bi bi-arrow-right-short"></i>
                 <p>Register</p>
               </a>
             </li>
