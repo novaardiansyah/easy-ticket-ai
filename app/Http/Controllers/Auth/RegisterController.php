@@ -23,6 +23,16 @@ class RegisterController extends Controller
 
   public function sendRegistrationLink(Request $request): RedirectResponse
   {
+    if ($request->session()->has('registration_cooldown')) {
+      $cooldown = $request->session()->get('registration_cooldown');
+      if (now()->timestamp < $cooldown) {
+        $minutes = (int) ceil(($cooldown - now()->timestamp) / 60);
+        return back()->withErrors([
+          'email' => "Please wait {$minutes} minute(s) before attempting another registration.",
+        ]);
+      }
+    }
+
     $request->validate([
       'email' => ['required', 'email'],
     ]);
@@ -46,7 +56,9 @@ class RegisterController extends Controller
       ['email' => $request->email]
     );
 
-    Mail::to($request->email)->send(new RegisterLinkMail($request->email, $url));
+    Mail::to($request->email)->queue(new RegisterLinkMail($request->email, $url));
+
+    $request->session()->put('registration_cooldown', now()->addMinutes(30)->timestamp);
 
     return redirect()->route('register.success');
   }
