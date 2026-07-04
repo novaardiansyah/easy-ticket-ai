@@ -1,12 +1,12 @@
 <aside class="app-sidebar bg-body-secondary shadow" data-bs-theme="dark">
-  <div class="sidebar-brand d-block p-0" style="height: auto;">
+  <div class="sidebar-brand">
     <a href="{{ route('home') }}" class="brand-link">
       <img
-        src="{{ url('app-logo-16x9.png') }}"
-        alt="Easy Ticket AI"
-        class="brand-image opacity-100 w-100 shadow"
-				style="max-height: 120px; object-fit: cover;"
+        src="{{ url('app-logo-1x1.png') }}"
+        alt="Easy Ticket AI Logo"
+        class="brand-image opacity-100 shadow"
       />
+      <span class="brand-text fw-light">Easy Ticket AI</span>
     </a>
   </div>
 
