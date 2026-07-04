@@ -12,27 +12,14 @@
       <li class="nav-item dropdown">
         <a class="nav-link" data-bs-toggle="dropdown" href="#">
           <i class="bi bi-bell-fill"></i>
-          <span class="navbar-badge badge text-bg-warning">15</span>
         </a>
         <div class="dropdown-menu dropdown-menu-lg dropdown-menu-end">
-          <span class="dropdown-item dropdown-header">15 Notifications</span>
+          <span class="dropdown-item dropdown-header">Notifications</span>
           <div class="dropdown-divider"></div>
-          <a href="#" class="dropdown-item">
-            <i class="bi bi-envelope me-2"></i> 4 new messages
-            <span class="float-end text-secondary fs-7">3 mins</span>
-          </a>
-          <div class="dropdown-divider"></div>
-          <a href="#" class="dropdown-item">
-            <i class="bi bi-people-fill me-2"></i> 8 friend requests
-            <span class="float-end text-secondary fs-7">12 hours</span>
-          </a>
-          <div class="dropdown-divider"></div>
-          <a href="#" class="dropdown-item">
-            <i class="bi bi-file-earmark-fill me-2"></i> 3 new reports
-            <span class="float-end text-secondary fs-7">2 days</span>
-          </a>
-          <div class="dropdown-divider"></div>
-          <a href="#" class="dropdown-item dropdown-footer"> See All Notifications </a>
+          <div class="dropdown-item text-center text-secondary py-4">
+            <i class="bi bi-bell-slash fs-1 d-block mb-2"></i>
+            No notifications yet
+          </div>
         </div>
       </li>
 
@@ -103,40 +90,37 @@
       <li class="nav-item dropdown user-menu">
         <a href="#" class="nav-link dropdown-toggle" data-bs-toggle="dropdown">
           <img
-            src="{{ template('assets/img/user2-160x160.jpg') }}"
+            src="{{ url('logo-color.png') }}"
             class="user-image rounded-circle shadow"
             alt="User Image"
           />
-          <span class="d-none d-md-inline">Alexander Pierce</span>
+          <span class="d-none d-md-inline">Nova Ardiansyah</span>
         </a>
         <ul class="dropdown-menu dropdown-menu-lg dropdown-menu-end">
           <li class="user-header text-bg-primary">
             <img
-              src="{{ template('assets/img/user2-160x160.jpg') }}"
+              src="{{ url('logo-color.png') }}"
               class="rounded-circle shadow"
               alt="User Image"
             />
             <p>
-              Alexander Pierce - Web Developer
-              <small>Member since Nov. 2023</small>
+              Nova Ardiansyah
+              <small>Super Administrator</small>
             </p>
           </li>
-          <li class="user-body">
-            <div class="row">
-              <div class="col-4 text-center">
-                <a href="#">Followers</a>
-              </div>
-              <div class="col-4 text-center">
-                <a href="#">Sales</a>
-              </div>
-              <div class="col-4 text-center">
-                <a href="#">Friends</a>
-              </div>
-            </div>
-          </li>
-          <li class="user-footer">
-            <a href="#" class="btn btn-outline-secondary">Profile</a>
-            <a href="#" class="btn btn-outline-danger float-end">Sign out</a>
+          <li class="user-body ps-1">
+						<a href="#" class="dropdown-item">
+							<i class="bi bi-person-fill me-2"></i>
+							Profile
+						</a>
+						<a href="#" class="dropdown-item">
+							<i class="bi bi-gear-fill me-2"></i>
+							Settings
+						</a>
+						<a href="#" class="dropdown-item">
+							<i class="bi bi-box-arrow-right me-2"></i>
+							Logout
+						</a>
           </li>
         </ul>
       </li>

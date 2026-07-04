@@ -1,12 +1,12 @@
 <aside class="app-sidebar bg-body-secondary shadow" data-bs-theme="dark">
-  <div class="sidebar-brand">
+  <div class="sidebar-brand d-block p-0" style="height: auto;">
     <a href="{{ route('home') }}" class="brand-link">
       <img
-        src="{{ template('assets/img/AdminLTELogo.png') }}"
-        alt="AdminLTE Logo"
-        class="brand-image opacity-75 shadow"
+        src="{{ url('app-logo-16x9.png') }}"
+        alt="Easy Ticket AI"
+        class="brand-image opacity-100 w-100 shadow"
+				style="max-height: 120px; object-fit: cover;"
       />
-      <span class="brand-text fw-light">AdminLTE 4</span>
     </a>
   </div>
 
