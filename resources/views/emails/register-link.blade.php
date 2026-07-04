@@ -1,0 +1,161 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <meta charset="UTF-8" />
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      background-color: #ffffff;
+      margin: 0;
+      padding: 0;
+    }
+
+    .container {
+      max-width: 600px;
+      margin: auto;
+      padding: 40px 20px;
+      border: 1px solid #e0e0e0;
+      background-color: #ffffff;
+    }
+
+    .text-primary {
+      color: #3366FF;
+    }
+
+    .header {
+      text-align: center;
+      color: #3366FF;
+      font-size: 16px;
+      font-weight: bold;
+      margin-bottom: 16px;
+    }
+
+    .content,
+    .content p {
+      font-size: 14px;
+      color: #333333;
+      line-height: 1.6;
+    }
+
+    .card {
+      background-color: #f7f8fa;
+      border-radius: 8px;
+      padding: 15px;
+      color: #232323;
+      box-shadow: 0 1px 4px rgba(60, 60, 60, 0.06);
+      font-size: 12px;
+    }
+
+    .card h4,
+    .card h5 {
+      margin-top: 0;
+      color: #3366FF;
+    }
+
+    .list-flush {
+      list-style-type: none;
+      margin: 0;
+      padding: 0;
+      border-radius: 8px;
+      overflow: hidden;
+    }
+
+    .list-flush li {
+      background-color: #ecedf1;
+      padding: 10px 15px;
+      border-bottom: 1px solid rgba(60, 60, 60, 0.08);
+    }
+
+    .list-flush li:first-child {
+      border-top-left-radius: 8px;
+      border-top-right-radius: 8px;
+    }
+
+    .list-flush li:last-child {
+      border-bottom: none;
+      border-bottom-left-radius: 8px;
+      border-bottom-right-radius: 8px;
+    }
+
+    a {
+      color: #3366FF;
+      text-decoration: none;
+    }
+
+    a:hover {
+      opacity: .9;
+    }
+
+    .footer,
+    .footer a {
+      text-align: center;
+      font-size: 12px;
+      color: #999;
+      margin-top: 40px;
+      text-decoration: none;
+    }
+
+    .footer a:hover {
+      color: #3366FF;
+    }
+
+    .mb-2 {
+      margin-bottom: 18px;
+    }
+
+    ul {
+      list-style-type: none;
+      margin: 0;
+      padding: 0;
+      border-radius: 8px;
+      overflow: hidden;
+    }
+
+    ul li {
+      background-color: #f7f8fa;
+      padding: 10px 15px;
+      border-bottom: 1px solid rgba(60, 60, 60, 0.08);
+    }
+
+    .content ul li p {
+      margin: 0;
+      font-size: 12px;
+    }
+  </style>
+
+  <link rel="icon" href="https://personal-v4.novaardiansyah.id/favicon.png" type="image/png" />
+  <title>Complete Your Registration</title>
+</head>
+
+<body>
+  <div class="container">
+    <div class="header">
+      Hello {{ $name }},
+    </div>
+    <div class="content">
+      <p>Please click the button below to complete your Easy Ticket AI account registration:</p>
+      
+      <p style="text-align: center; margin: 30px 0;">
+        <a href="{{ $url }}" style="background-color: #3366FF; color: #ffffff; padding: 12px 24px; border-radius: 4px; display: inline-block; font-weight: bold; text-decoration: none;">Continue Registration</a>
+      </p>
+
+      <p>If the button above does not work, please copy and paste the following link into your web browser:</p>
+      
+      <p style="word-break: break-all; background-color: #f7f8fa; padding: 12px; border-radius: 6px; font-size: 12px; border: 1px solid rgba(60, 60, 60, 0.08); line-height: 1.4;">
+        <a href="{{ $url }}" style="color: #3366FF; text-decoration: underline;">{{ $url }}</a>
+      </p>
+
+      <p style="margin-top: 30px; margin-bottom: 20px">Thank you for your attention.</p>
+
+      <p style="margin-bottom: 20px">Warm regards,</p>
+      <p>Easy Ticket AI Team</p>
+    </div>
+
+    <div class="footer">
+      &copy; 2026 <a href="https://novaardiansyah.id">Nova Ardiansyah</a>. All rights reserved.
+    </div>
+  </div>
+</body>
+
+</html>

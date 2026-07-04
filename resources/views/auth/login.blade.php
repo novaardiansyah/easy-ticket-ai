@@ -97,7 +97,7 @@
 
           <div class="d-flex justify-content-between mt-3">
             <a href="#" class="small text-decoration-none">Forgot password?</a>
-            <a href="#" class="small text-decoration-none">Register</a>
+            <a href="{{ route('register') }}" class="small text-decoration-none">Register</a>
           </div>
         </div>
       </div>
