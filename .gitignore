@@ -38,3 +38,4 @@ Makefile
 setup.sh
 
 /public/template/**/*.html
+deploy/
