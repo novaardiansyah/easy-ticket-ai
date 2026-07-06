@@ -19,6 +19,9 @@ Route::middleware('guest')->group(function () {
   Route::post('register/setup', [RegisterController::class, 'setupAccount'])->name('register.setup.submit');
 });
 
+Route::get('privacy-policy', [\App\Http\Controllers\PageController::class, 'privacy'])->name('privacy');
+Route::get('terms-of-service', [\App\Http\Controllers\PageController::class, 'terms'])->name('terms');
+
 Route::middleware('auth')->group(function () {
   Route::get('/', [HomeController::class, 'index'])->name('home');
   Route::post('logout', [LoginController::class, 'logout'])->name('logout');
