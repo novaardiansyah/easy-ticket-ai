@@ -53,7 +53,7 @@
           </div>
 
           <div class="d-grid gap-2">
-            <a href="#" class="btn btn-outline-secondary d-flex align-items-center justify-content-center gap-2 py-2" style="border-color: #dee2e6; color: #495057; background-color: #fff; transition: all 0.2s ease;">
+            <a href="{{ route('auth.google.redirect') }}" class="btn btn-outline-secondary d-flex align-items-center justify-content-center gap-2 py-2" style="border-color: #dee2e6; color: #495057; background-color: #fff; transition: all 0.2s ease;">
               <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 48 48">
                 <path fill="#EA4335" d="M24 9.5c3.54 0 6.71 1.22 9.21 3.6l6.85-6.85C35.9 2.38 30.47 0 24 0 14.62 0 6.51 5.38 2.56 13.22l7.98 6.19C12.43 13.72 17.74 9.5 24 9.5z"/>
                 <path fill="#4285F4" d="M46.5 24c0-1.61-.15-3.16-.42-4.69H24v8.89h12.62c-.54 2.85-2.15 5.27-4.57 6.89l7.1 5.5C43.34 36.63 46.5 30.82 46.5 24z"/>
