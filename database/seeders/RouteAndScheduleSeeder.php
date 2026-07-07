@@ -12,12 +12,12 @@ class RouteAndScheduleSeeder extends Seeder
     public function run(): void
     {
         $gmr = Station::where('code', 'GMR')->value('id');
-        $bd  = Station::where('code', 'BD')->value('id');
+        $bd = Station::where('code', 'BD')->value('id');
         $sgu = Station::where('code', 'SGU')->value('id');
-        $yk  = Station::where('code', 'YK')->value('id');
+        $yk = Station::where('code', 'YK')->value('id');
         $slo = Station::where('code', 'SLO')->value('id');
-        $ml  = Station::where('code', 'ML')->value('id');
-        $cn  = Station::where('code', 'CN')->value('id');
+        $ml = Station::where('code', 'ML')->value('id');
+        $cn = Station::where('code', 'CN')->value('id');
         $pwt = Station::where('code', 'PWT')->value('id');
         $smt = Station::where('code', 'SMT')->value('id');
 
@@ -92,7 +92,7 @@ class RouteAndScheduleSeeder extends Seeder
                 $interval = intval($r['min'] / (count($r['stops']) + 1));
 
                 foreach ($r['stops'] as $i => $stop) {
-                    $stopDeparture = date('Y-m-d H:i:s', strtotime("{$departure} + " . ($interval * ($i + 1)) . " minutes"));
+                    $stopDeparture = date('Y-m-d H:i:s', strtotime("{$departure} + ".($interval * ($i + 1)).' minutes'));
                     $stopArrival = date('Y-m-d H:i:s', strtotime("{$stopDeparture} - 5 minutes"));
 
                     $schedule->stops()->create([
