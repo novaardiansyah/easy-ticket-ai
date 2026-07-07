@@ -24,6 +24,9 @@ This project is an AI agent that understands user intent, calls Laravel tools au
 - Conversation summary and memory management
 - Ticket search, check, and refund tools
 - Comprehensive tool logging and monitoring
+- **Admin Panel Operations**: Full management for stations, trains, carriages, routes, schedules, bookings, and payments.
+- **Server-Side DataTables**: Standardized server-side jQuery DataTables with local assets integration, native pagination, searching, and disabled column ordering.
+- **Interactive Agent Ticketing**: Integrated ticket booking service (`BookingService`) allowing admins/agents to book tickets, dynamically select seats via AJAX, manage multiple passengers, and automatically generate ticket codes and bookings.
 
 ## Credentials & Environment
 
