@@ -18,15 +18,37 @@ This project is an AI agent that understands user intent, calls Laravel tools au
 
 ## Features
 
-- Conversation management with state tracking
-- AI-powered intent recognition and tool calling
-- Smart context builder with conversation history
-- Conversation summary and memory management
-- Ticket search, check, and refund tools
-- Comprehensive tool logging and monitoring
-- **Admin Panel Operations**: Full management for stations, trains, carriages, routes, schedules, bookings, and payments.
-- **Server-Side DataTables**: Standardized server-side jQuery DataTables with local assets integration, native pagination, searching, and disabled column ordering.
-- **Interactive Agent Ticketing**: Integrated ticket booking service (`BookingService`) allowing admins/agents to book tickets, dynamically select seats via AJAX, manage multiple passengers, and automatically generate ticket codes and bookings.
+### AI Ticket Agent Capabilities
+- Conversation management with state tracking.
+- AI-powered intent recognition and tool calling.
+- Smart context builder with conversation history.
+- Conversation summary and memory management.
+- Ticket search, check, and refund tools.
+- Comprehensive tool logging and monitoring.
+
+### Authentication and Identity
+- Secure login and registration.
+- Single Sign-On (SSO) integration using Google accounts.
+- Registration security with email verification.
+- Role-based route access controls protecting administrative features.
+
+### Station and Transit Network Management
+- Management of stations, routes, distances, and travel durations.
+- Configuration of trains with carriages, seating classes, and capacity limits.
+- Scheduling system matching trains to specific routes and departure dates.
+
+### Ticket Booking Engine
+- Dynamic seat selection preventing double bookings.
+- Passenger management allowing agents to book tickets for multiple customers in a single order.
+- Live booking cost calculation based on selected passengers and schedule base price.
+- Automatic booking code and unique ticket number generation.
+- Basic payment records tracking (cash, bank transfer, and e-wallet options).
+
+### Interface Optimization
+- Native data grids featuring server-side pagination, sorting, and global search.
+- Clean layout spacing separating main tables from page footers.
+- Decoupled JavaScript modules stored in public folders for cleaner maintenance.
+- Localized hosting of core libraries (jQuery, DataTables) to enable offline capabilities.
 
 ## Credentials & Environment
 
