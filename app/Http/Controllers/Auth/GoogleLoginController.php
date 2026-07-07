@@ -11,41 +11,42 @@ use Laravel\Socialite\Facades\Socialite;
 
 class GoogleLoginController extends Controller
 {
-    public function redirect(): RedirectResponse
-    {
-        return Socialite::driver('google')->redirect();
-    }
+	public function redirect(): RedirectResponse
+	{
+		return Socialite::driver('google')->redirect();
+	}
 
-    public function callback(): RedirectResponse
-    {
-        $googleUser = Socialite::driver('google')->user();
+	public function callback(): RedirectResponse
+	{
+		$googleUser = Socialite::driver('google')->user();
 
-        $user = User::where('provider', 'google')
-            ->where('provider_id', $googleUser->getId())
-            ->first();
+		$user = User::where('provider', 'google')
+			->where('provider_id', $googleUser->getId())
+			->first();
 
-        if (! $user) {
-            $user = User::where('email', $googleUser->getEmail())->first();
+		if (! $user) {
+			$user = User::where('email', $googleUser->getEmail())->first();
 
-            if ($user) {
-                $user->provider = 'google';
-                $user->provider_id = $googleUser->getId();
-                $user->save();
-            } else {
-                $user = User::create([
-                    'name' => $googleUser->getName() ?? explode('@', $googleUser->getEmail())[0],
-                    'email' => $googleUser->getEmail(),
-                    'password' => Str::random(32),
-                    'provider' => 'google',
-                    'provider_id' => $googleUser->getId(),
-                    'email_verified_at' => now(),
-                ]);
-            }
-        }
+			if ($user) {
+				$user->provider = 'google';
+				$user->provider_id = $googleUser->getId();
+				$user->save();
+			} else {
+				$user = User::create([
+					'name'              => $googleUser->getName() ?? explode('@', $googleUser->getEmail())[0],
+					'email'             => $googleUser->getEmail(),
+					'password'          => Str::random(32),
+					'provider'          => 'google',
+					'provider_id'       => $googleUser->getId(),
+					'email_verified_at' => now(),
+					'role'              => 'customer',
+				]);
+			}
+		}
 
-        Auth::login($user);
-        request()->session()->regenerate();
+		Auth::login($user);
+		request()->session()->regenerate();
 
-        return redirect()->intended(route('home'));
-    }
+		return redirect()->intended(route('home'));
+	}
 }

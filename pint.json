@@ -1,0 +1,18 @@
+{
+	"preset": "laravel",
+	"indent": 2,
+	"rules": {
+		"blank_line_after_opening_tag": false,
+		"no_extra_blank_lines": {
+			"tokens": [
+				"break",
+				"continue",
+				"extra",
+				"return",
+				"throw",
+				"use"
+			]
+		},
+		"indentation_type": true
+	}
+}
