@@ -46,8 +46,8 @@ $(document).ready(function() {
                 Actions
               </button>
               <ul class="dropdown-menu">
-                <li><a class="dropdown-item" href="${showUrl}"><i class="bi bi-eye me-2 text-info"></i> Show</a></li>
-                <li><a class="dropdown-item" href="${editUrl}"><i class="bi bi-pencil me-2 text-warning"></i> Edit</a></li>
+                <li><a class="dropdown-item" href="${showUrl}"><i class="bi bi-eye me-2 text-secondary"></i> Show</a></li>
+                <li><a class="dropdown-item" href="${editUrl}"><i class="bi bi-pencil me-2 text-secondary"></i> Edit</a></li>
                 <li>
                   <form action="${deleteUrl}" method="POST" class="d-inline" onsubmit="return confirm('Delete this train?')">
                     <input type="hidden" name="_token" value="${csrfToken}">

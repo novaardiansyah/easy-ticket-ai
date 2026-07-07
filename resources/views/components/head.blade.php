@@ -48,4 +48,14 @@
 
 <link rel="stylesheet" href="{{ template('css/adminlte.css') }}" />
 <link rel="stylesheet" href="{{ asset('css/dataTables.bootstrap5.min.css') }}" />
+<style>
+  div.dataTables_wrapper div.dataTables_processing {
+    background-color: var(--bs-body-bg);
+    color: var(--bs-body-color);
+  }
+  table.dataTable {
+    margin-top: 15px !important;
+    margin-bottom: 15px !important;
+  }
+</style>
 @stack('styles')

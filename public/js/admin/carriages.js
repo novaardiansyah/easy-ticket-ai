@@ -46,7 +46,7 @@ $(document).ready(function() {
                 Actions
               </button>
               <ul class="dropdown-menu">
-                <li><a class="dropdown-item" href="${editUrl}"><i class="bi bi-pencil me-2 text-warning"></i> Edit</a></li>
+                <li><a class="dropdown-item" href="${editUrl}"><i class="bi bi-pencil me-2 text-secondary"></i> Edit</a></li>
                 <li>
                   <form action="${deleteUrl}" method="POST" class="d-inline" onsubmit="return confirm('Delete this carriage?')">
                     <input type="hidden" name="_token" value="${csrfToken}">

@@ -76,7 +76,7 @@ $(document).ready(function() {
                 Actions
               </button>
               <ul class="dropdown-menu">
-                <li><a class="dropdown-item" href="${showUrl}"><i class="bi bi-eye me-2 text-info"></i> Show</a></li>
+                <li><a class="dropdown-item" href="${showUrl}"><i class="bi bi-eye me-2 text-secondary"></i> Show</a></li>
               </ul>
             </div>
           `;
