@@ -47,3 +47,5 @@
 />
 
 <link rel="stylesheet" href="{{ template('css/adminlte.css') }}" />
+<link rel="stylesheet" href="{{ asset('css/dataTables.bootstrap5.min.css') }}" />
+@stack('styles')

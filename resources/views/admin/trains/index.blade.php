@@ -20,37 +20,52 @@
 
 @section('content')
 <div class="card">
-  <div class="card-header d-flex justify-content-between align-items-center">
-    <span class="card-title">All Trains</span>
-    <a href="{{ route('admin.trains.create') }}" class="btn btn-primary btn-sm">Add New</a>
+  <div class="card-header">
+    <h3 class="card-title">All Trains</h3>
+    <div class="card-tools">
+      <a href="{{ route('admin.trains.create') }}" class="btn btn-primary btn-sm">Add New</a>
+    </div>
   </div>
-  <div class="card-body p-0">
-    <table class="table table-striped mb-0">
+  <div class="card-body">
+    <table id="trains-table" 
+           class="table table-striped table-bordered w-100"
+           data-ajax-url="{{ route('admin.trains.index') }}"
+           data-csrf-token="{{ csrf_token() }}"
+           data-show-url-template="{{ route('admin.trains.show', ':id') }}"
+           data-edit-url-template="{{ route('admin.trains.edit', ':id') }}"
+           data-delete-url-template="{{ route('admin.trains.destroy', ':id') }}">
       <thead>
-        <tr><th>#</th><th>Code</th><th>Name</th><th>Status</th><th>Carriages</th><th>Actions</th></tr>
+        <tr>
+          <th>Code</th>
+          <th>Name</th>
+          <th>Status</th>
+          <th>Carriages</th>
+          <th style="width: 120px;">Actions</th>
+        </tr>
       </thead>
       <tbody>
-        @forelse ($trains as $train)
-        <tr>
-          <td>{{ $loop->iteration }}</td>
-          <td><span class="badge bg-secondary">{{ $train->code }}</span></td>
-          <td>{{ $train->name }}</td>
-          <td><span class="badge bg-{{ $train->status === 'active' ? 'success' : 'danger' }}">{{ $train->status }}</span></td>
-          <td>{{ $train->carriages_count }}</td>
-          <td>
-            <a href="{{ route('admin.trains.show', $train) }}" class="btn btn-sm btn-info"><i class="bi bi-eye"></i></a>
-            <a href="{{ route('admin.trains.edit', $train) }}" class="btn btn-sm btn-warning"><i class="bi bi-pencil"></i></a>
-            <form action="{{ route('admin.trains.destroy', $train) }}" method="POST" class="d-inline" onsubmit="return confirm('Delete this train?')">
-              @csrf @method('DELETE')
-              <button class="btn btn-sm btn-danger"><i class="bi bi-trash"></i></button>
-            </form>
-          </td>
-        </tr>
-        @empty
-        <tr><td colspan="6" class="text-center text-secondary py-3">No trains found.</td></tr>
-        @endforelse
       </tbody>
     </table>
   </div>
 </div>
 @endsection
+
+@push('styles')
+<style>
+  div.dataTables_wrapper div.dataTables_processing {
+    background-color: var(--bs-body-bg);
+    color: var(--bs-body-color);
+  }
+  table.dataTable {
+    margin-top: 15px !important;
+    margin-bottom: 15px !important;
+  }
+  .dropdown-menu {
+    z-index: 1050 !important;
+  }
+</style>
+@endpush
+
+@push('scripts')
+<script src="{{ asset('js/admin/trains.js') }}"></script>
+@endpush

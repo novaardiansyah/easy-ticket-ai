@@ -20,46 +20,59 @@
 
 @section('content')
 <div class="card">
-  <div class="card-header d-flex justify-content-between align-items-center">
-    <span class="card-title">All Carriages</span>
-    <div>
-      <form method="GET" class="d-inline-block">
-        <select name="train_id" class="form-select form-select-sm d-inline-block w-auto" onchange="this.form.submit()">
+  <div class="card-header">
+    <h3 class="card-title">All Carriages</h3>
+    <div class="card-tools d-flex align-items-center">
+      <div class="me-2">
+        <select name="train_id" class="form-select form-select-sm d-inline-block w-auto">
           <option value="">All Trains</option>
           @foreach ($trains as $t)
-          <option value="{{ $t->id }}" {{ request('train_id') == $t->id ? 'selected' : '' }}>{{ $t->name }} ({{ $t->code }})</option>
+          <option value="{{ $t->id }}">{{ $t->name }} ({{ $t->code }})</option>
           @endforeach
         </select>
-      </form>
+      </div>
       <a href="{{ route('admin.carriages.create') }}" class="btn btn-primary btn-sm">Add New</a>
     </div>
   </div>
-  <div class="card-body p-0">
-    <table class="table table-striped mb-0">
+  <div class="card-body">
+    <table id="carriages-table" 
+           class="table table-striped table-bordered w-100"
+           data-ajax-url="{{ route('admin.carriages.index') }}"
+           data-csrf-token="{{ csrf_token() }}"
+           data-edit-url-template="{{ route('admin.carriages.edit', ':id') }}"
+           data-delete-url-template="{{ route('admin.carriages.destroy', ':id') }}">
       <thead>
-        <tr><th>#</th><th>Train</th><th>Name</th><th>Class</th><th>Capacity</th><th>Actions</th></tr>
+        <tr>
+          <th>Train</th>
+          <th>Name</th>
+          <th>Class</th>
+          <th>Capacity</th>
+          <th style="width: 120px;">Actions</th>
+        </tr>
       </thead>
       <tbody>
-        @forelse ($carriages as $carriage)
-        <tr>
-          <td>{{ $loop->iteration }}</td>
-          <td>{{ $carriage->train->name ?? '-' }}</td>
-          <td>{{ $carriage->name }}</td>
-          <td><span class="badge bg-info">{{ $carriage->class }}</span></td>
-          <td>{{ $carriage->capacity }}</td>
-          <td>
-            <a href="{{ route('admin.carriages.edit', $carriage) }}" class="btn btn-sm btn-warning"><i class="bi bi-pencil"></i></a>
-            <form action="{{ route('admin.carriages.destroy', $carriage) }}" method="POST" class="d-inline" onsubmit="return confirm('Delete this carriage?')">
-              @csrf @method('DELETE')
-              <button class="btn btn-sm btn-danger"><i class="bi bi-trash"></i></button>
-            </form>
-          </td>
-        </tr>
-        @empty
-        <tr><td colspan="6" class="text-center text-secondary py-3">No carriages found.</td></tr>
-        @endforelse
       </tbody>
     </table>
   </div>
 </div>
 @endsection
+
+@push('styles')
+<style>
+  div.dataTables_wrapper div.dataTables_processing {
+    background-color: var(--bs-body-bg);
+    color: var(--bs-body-color);
+  }
+  table.dataTable {
+    margin-top: 15px !important;
+    margin-bottom: 15px !important;
+  }
+  .dropdown-menu {
+    z-index: 1050 !important;
+  }
+</style>
+@endpush
+
+@push('scripts')
+<script src="{{ asset('js/admin/carriages.js') }}"></script>
+@endpush

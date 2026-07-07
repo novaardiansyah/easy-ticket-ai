@@ -20,35 +20,48 @@
 
 @section('content')
 <div class="card">
-  <div class="card-header"><span class="card-title">All Bookings</span></div>
-  <div class="card-body p-0">
-    <table class="table table-striped mb-0">
+  <div class="card-header">
+    <h3 class="card-title">All Bookings</h3>
+  </div>
+  <div class="card-body">
+    <table id="bookings-table" 
+           class="table table-striped table-bordered w-100"
+           data-ajax-url="{{ route('admin.bookings.index') }}"
+           data-show-url-template="{{ route('admin.bookings.show', ':id') }}">
       <thead>
-        <tr><th>#</th><th>Booking Code</th><th>Customer</th><th>Schedule</th><th>Total</th><th>Status</th><th>Booked At</th><th>Actions</th></tr>
+        <tr>
+          <th>Booking Code</th>
+          <th>Customer</th>
+          <th>Schedule</th>
+          <th>Total</th>
+          <th>Status</th>
+          <th>Booked At</th>
+          <th style="width: 120px;">Actions</th>
+        </tr>
       </thead>
       <tbody>
-        @forelse ($bookings as $booking)
-        <tr>
-          <td>{{ $loop->iteration }}</td>
-          <td><span class="badge bg-dark">{{ $booking->booking_code }}</span></td>
-          <td>{{ $booking->customer_name ?: $booking->user?->name ?: '-' }}</td>
-          <td>{{ $booking->schedule->train->code ?? '-' }} &middot; {{ \Carbon\Carbon::parse($booking->schedule->departure_time)->format('d M H:i') }}</td>
-          <td>Rp {{ number_format($booking->total_price, 0, ',', '.') }}</td>
-          <td>
-            <span class="badge bg-{{ $booking->status === 'paid' ? 'success' : ($booking->status === 'pending' ? 'warning' : ($booking->status === 'cancelled' ? 'danger' : 'secondary')) }}">
-              {{ $booking->status }}
-            </span>
-          </td>
-          <td>{{ $booking->created_at->format('d M H:i') }}</td>
-          <td>
-            <a href="{{ route('admin.bookings.show', $booking) }}" class="btn btn-sm btn-info"><i class="bi bi-eye"></i></a>
-          </td>
-        </tr>
-        @empty
-        <tr><td colspan="8" class="text-center text-secondary py-3">No bookings found.</td></tr>
-        @endforelse
       </tbody>
     </table>
   </div>
 </div>
 @endsection
+
+@push('styles')
+<style>
+  div.dataTables_wrapper div.dataTables_processing {
+    background-color: var(--bs-body-bg);
+    color: var(--bs-body-color);
+  }
+  table.dataTable {
+    margin-top: 15px !important;
+    margin-bottom: 15px !important;
+  }
+  .dropdown-menu {
+    z-index: 1050 !important;
+  }
+</style>
+@endpush
+
+@push('scripts')
+<script src="{{ asset('js/admin/bookings.js') }}"></script>
+@endpush

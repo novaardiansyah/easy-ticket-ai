@@ -8,11 +8,34 @@ use Illuminate\Http\Request;
 
 class StationController extends Controller
 {
-    public function index()
+    public function index(Request $request)
     {
-        $stations = Station::latest()->get();
+        if ($request->ajax() || $request->wantsJson()) {
+            $query = Station::query();
+            $totalRecords = $query->count();
+            if ($request->filled('search.value')) {
+                $searchValue = $request->input('search.value');
+                $query->where(function ($q) use ($searchValue) {
+                    $q->where('code', 'like', '%'.$searchValue.'%')
+                        ->orWhere('name', 'like', '%'.$searchValue.'%')
+                        ->orWhere('city', 'like', '%'.$searchValue.'%');
+                });
+            }
+            $filteredRecords = $query->count();
+            $query->latest();
+            $start = $request->input('start', 0);
+            $length = $request->input('length', 10);
+            $stations = $query->skip($start)->take($length)->get();
 
-        return view('admin.stations.index', compact('stations'));
+            return response()->json([
+                'draw' => intval($request->input('draw')),
+                'recordsTotal' => $totalRecords,
+                'recordsFiltered' => $filteredRecords,
+                'data' => $stations,
+            ]);
+        }
+
+        return view('admin.stations.index');
     }
 
     public function create()

@@ -9,7 +9,7 @@
       @include('components.sidebar')
       <main class="app-main">
         @yield('content-header')
-        <div class="app-content">
+        <div class="app-content pb-4">
           <div class="container-fluid">
             @yield('content')
           </div>
