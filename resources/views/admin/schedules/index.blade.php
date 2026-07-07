@@ -20,42 +20,53 @@
 
 @section('content')
 <div class="card">
-  <div class="card-header d-flex justify-content-between align-items-center">
-    <span class="card-title">All Schedules</span>
-    <a href="{{ route('admin.schedules.create') }}" class="btn btn-primary btn-sm">Add New</a>
+  <div class="card-header">
+    <h3 class="card-title">All Schedules</h3>
+    <div class="card-tools">
+      <a href="{{ route('admin.schedules.create') }}" class="btn btn-primary btn-sm">Add New</a>
+    </div>
   </div>
-  <div class="card-body p-0">
-    <table class="table table-striped mb-0">
+  <div class="card-body">
+    <table id="schedules-table" 
+           class="table table-striped table-bordered w-100"
+           data-ajax-url="{{ route('admin.schedules.index') }}"
+           data-csrf-token="{{ csrf_token() }}"
+           data-show-url-template="{{ route('admin.schedules.show', ':id') }}"
+           data-edit-url-template="{{ route('admin.schedules.edit', ':id') }}"
+           data-delete-url-template="{{ route('admin.schedules.destroy', ':id') }}">
       <thead>
-        <tr><th>#</th><th>Train</th><th>Route</th><th>Departure</th><th>Arrival</th><th>Base Price</th><th>Actions</th></tr>
+        <tr>
+          <th>Train</th>
+          <th>Route</th>
+          <th>Departure</th>
+          <th>Arrival</th>
+          <th>Base Price</th>
+          <th style="width: 120px;">Actions</th>
+        </tr>
       </thead>
       <tbody>
-        @forelse ($schedules as $schedule)
-        <tr>
-          <td>{{ $loop->iteration }}</td>
-          <td>{{ $schedule->train->name ?? '-' }}</td>
-          <td>
-            {{ $schedule->route->originStation->code ?? '?' }}
-            &rarr;
-            {{ $schedule->route->destinationStation->code ?? '?' }}
-          </td>
-          <td>{{ \Carbon\Carbon::parse($schedule->departure_time)->format('d M Y H:i') }}</td>
-          <td>{{ \Carbon\Carbon::parse($schedule->arrival_time)->format('d M Y H:i') }}</td>
-          <td>Rp {{ number_format($schedule->base_price, 0, ',', '.') }}</td>
-          <td>
-            <a href="{{ route('admin.schedules.show', $schedule) }}" class="btn btn-sm btn-info"><i class="bi bi-eye"></i></a>
-            <a href="{{ route('admin.schedules.edit', $schedule) }}" class="btn btn-sm btn-warning"><i class="bi bi-pencil"></i></a>
-            <form action="{{ route('admin.schedules.destroy', $schedule) }}" method="POST" class="d-inline" onsubmit="return confirm('Delete this schedule?')">
-              @csrf @method('DELETE')
-              <button class="btn btn-sm btn-danger"><i class="bi bi-trash"></i></button>
-            </form>
-          </td>
-        </tr>
-        @empty
-        <tr><td colspan="7" class="text-center text-secondary py-3">No schedules found.</td></tr>
-        @endforelse
       </tbody>
     </table>
   </div>
 </div>
 @endsection
+
+@push('styles')
+<style>
+  div.dataTables_wrapper div.dataTables_processing {
+    background-color: var(--bs-body-bg);
+    color: var(--bs-body-color);
+  }
+  table.dataTable {
+    margin-top: 15px !important;
+    margin-bottom: 15px !important;
+  }
+  .dropdown-menu {
+    z-index: 1050 !important;
+  }
+</style>
+@endpush
+
+@push('scripts')
+<script src="{{ asset('js/admin/schedules.js') }}"></script>
+@endpush

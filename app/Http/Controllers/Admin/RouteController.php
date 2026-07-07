@@ -9,11 +9,38 @@ use Illuminate\Http\Request;
 
 class RouteController extends Controller
 {
-    public function index()
+    public function index(Request $request)
     {
-        $routes = Route::with('originStation', 'destinationStation')->latest()->get();
+        if ($request->ajax() || $request->wantsJson()) {
+            $query = Route::with('originStation', 'destinationStation');
+            $totalRecords = $query->count();
+            if ($request->filled('search.value')) {
+                $searchValue = $request->input('search.value');
+                $query->where(function ($q) use ($searchValue) {
+                    $q->whereHas('originStation', function ($q2) use ($searchValue) {
+                        $q2->where('name', 'like', '%'.$searchValue.'%')
+                            ->orWhere('code', 'like', '%'.$searchValue.'%');
+                    })->orWhereHas('destinationStation', function ($q2) use ($searchValue) {
+                        $q2->where('name', 'like', '%'.$searchValue.'%')
+                            ->orWhere('code', 'like', '%'.$searchValue.'%');
+                    });
+                });
+            }
+            $filteredRecords = $query->count();
+            $query->latest();
+            $start = $request->input('start', 0);
+            $length = $request->input('length', 10);
+            $routes = $query->skip($start)->take($length)->get();
 
-        return view('admin.routes.index', compact('routes'));
+            return response()->json([
+                'draw' => intval($request->input('draw')),
+                'recordsTotal' => $totalRecords,
+                'recordsFiltered' => $filteredRecords,
+                'data' => $routes,
+            ]);
+        }
+
+        return view('admin.routes.index');
     }
 
     public function create()

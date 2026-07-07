@@ -20,36 +20,51 @@
 
 @section('content')
 <div class="card">
-  <div class="card-header d-flex justify-content-between align-items-center">
-    <span class="card-title">All Routes</span>
-    <a href="{{ route('admin.routes.create') }}" class="btn btn-primary btn-sm">Add New</a>
+  <div class="card-header">
+    <h3 class="card-title">All Routes</h3>
+    <div class="card-tools">
+      <a href="{{ route('admin.routes.create') }}" class="btn btn-primary btn-sm">Add New</a>
+    </div>
   </div>
-  <div class="card-body p-0">
-    <table class="table table-striped mb-0">
+  <div class="card-body">
+    <table id="routes-table" 
+           class="table table-striped table-bordered w-100"
+           data-ajax-url="{{ route('admin.routes.index') }}"
+           data-csrf-token="{{ csrf_token() }}"
+           data-edit-url-template="{{ route('admin.routes.edit', ':id') }}"
+           data-delete-url-template="{{ route('admin.routes.destroy', ':id') }}">
       <thead>
-        <tr><th>#</th><th>Origin</th><th>Destination</th><th>Distance (km)</th><th>Duration (min)</th><th>Actions</th></tr>
+        <tr>
+          <th>Origin</th>
+          <th>Destination</th>
+          <th>Distance (km)</th>
+          <th>Duration (min)</th>
+          <th style="width: 120px;">Actions</th>
+        </tr>
       </thead>
       <tbody>
-        @forelse ($routes as $route)
-        <tr>
-          <td>{{ $loop->iteration }}</td>
-          <td>{{ $route->originStation->name ?? '-' }} <span class="badge bg-secondary">{{ $route->originStation->code ?? '' }}</span></td>
-          <td>{{ $route->destinationStation->name ?? '-' }} <span class="badge bg-secondary">{{ $route->destinationStation->code ?? '' }}</span></td>
-          <td>{{ $route->distance_km ? number_format($route->distance_km) : '-' }}</td>
-          <td>{{ $route->estimated_duration ?? '-' }}</td>
-          <td>
-            <a href="{{ route('admin.routes.edit', $route) }}" class="btn btn-sm btn-warning"><i class="bi bi-pencil"></i></a>
-            <form action="{{ route('admin.routes.destroy', $route) }}" method="POST" class="d-inline" onsubmit="return confirm('Delete this route?')">
-              @csrf @method('DELETE')
-              <button class="btn btn-sm btn-danger"><i class="bi bi-trash"></i></button>
-            </form>
-          </td>
-        </tr>
-        @empty
-        <tr><td colspan="6" class="text-center text-secondary py-3">No routes found.</td></tr>
-        @endforelse
       </tbody>
     </table>
   </div>
 </div>
 @endsection
+
+@push('styles')
+<style>
+  div.dataTables_wrapper div.dataTables_processing {
+    background-color: var(--bs-body-bg);
+    color: var(--bs-body-color);
+  }
+  table.dataTable {
+    margin-top: 15px !important;
+    margin-bottom: 15px !important;
+  }
+  .dropdown-menu {
+    z-index: 1050 !important;
+  }
+</style>
+@endpush
+
+@push('scripts')
+<script src="{{ asset('js/admin/routes.js') }}"></script>
+@endpush

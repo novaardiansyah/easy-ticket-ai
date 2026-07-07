@@ -11,16 +11,38 @@ class CarriageController extends Controller
 {
     public function index(Request $request)
     {
-        $query = TrainCarriage::with('train');
+        if ($request->ajax() || $request->wantsJson()) {
+            $query = TrainCarriage::with('train');
+            if ($request->filled('train_id')) {
+                $query->where('train_id', $request->train_id);
+            }
+            $totalRecords = $query->count();
+            if ($request->filled('search.value')) {
+                $searchValue = $request->input('search.value');
+                $query->where(function ($q) use ($searchValue) {
+                    $q->where('name', 'like', '%'.$searchValue.'%')
+                        ->orWhereHas('train', function ($q2) use ($searchValue) {
+                            $q2->where('name', 'like', '%'.$searchValue.'%')
+                                ->orWhere('code', 'like', '%'.$searchValue.'%');
+                        });
+                });
+            }
+            $filteredRecords = $query->count();
+            $query->latest();
+            $start = $request->input('start', 0);
+            $length = $request->input('length', 10);
+            $carriages = $query->skip($start)->take($length)->get();
 
-        if ($request->filled('train_id')) {
-            $query->where('train_id', $request->train_id);
+            return response()->json([
+                'draw' => intval($request->input('draw')),
+                'recordsTotal' => $totalRecords,
+                'recordsFiltered' => $filteredRecords,
+                'data' => $carriages,
+            ]);
         }
-
-        $carriages = $query->latest()->get();
         $trains = Train::where('status', 'active')->get();
 
-        return view('admin.carriages.index', compact('carriages', 'trains'));
+        return view('admin.carriages.index', compact('trains'));
     }
 
     public function create()

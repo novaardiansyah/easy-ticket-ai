@@ -20,35 +20,48 @@
 
 @section('content')
 <div class="card">
-  <div class="card-header"><span class="card-title">All Payments</span></div>
-  <div class="card-body p-0">
-    <table class="table table-striped mb-0">
+  <div class="card-header">
+    <h3 class="card-title">All Payments</h3>
+  </div>
+  <div class="card-body">
+    <table id="payments-table" 
+           class="table table-striped table-bordered w-100"
+           data-ajax-url="{{ route('admin.payments.index') }}"
+           data-show-url-template="{{ route('admin.payments.show', ':id') }}">
       <thead>
-        <tr><th>#</th><th>Booking</th><th>Method</th><th>Amount</th><th>Status</th><th>Transaction ID</th><th>Paid At</th><th>Actions</th></tr>
+        <tr>
+          <th>Booking</th>
+          <th>Method</th>
+          <th>Amount</th>
+          <th>Status</th>
+          <th>Transaction ID</th>
+          <th>Paid At</th>
+          <th style="width: 120px;">Actions</th>
+        </tr>
       </thead>
       <tbody>
-        @forelse ($payments as $payment)
-        <tr>
-          <td>{{ $loop->iteration }}</td>
-          <td><span class="badge bg-dark">{{ $payment->booking->booking_code ?? '-' }}</span></td>
-          <td>{{ $payment->payment_method }}</td>
-          <td>Rp {{ number_format($payment->amount, 0, ',', '.') }}</td>
-          <td>
-            <span class="badge bg-{{ $payment->status === 'success' ? 'success' : ($payment->status === 'pending' ? 'warning' : 'danger') }}">
-              {{ $payment->status }}
-            </span>
-          </td>
-          <td><small class="text-muted">{{ $payment->transaction_id ?: '-' }}</small></td>
-          <td>{{ $payment->paid_at ? \Carbon\Carbon::parse($payment->paid_at)->format('d M H:i') : '-' }}</td>
-          <td>
-            <a href="{{ route('admin.payments.show', $payment) }}" class="btn btn-sm btn-info"><i class="bi bi-eye"></i></a>
-          </td>
-        </tr>
-        @empty
-        <tr><td colspan="8" class="text-center text-secondary py-3">No payments found.</td></tr>
-        @endforelse
       </tbody>
     </table>
   </div>
 </div>
 @endsection
+
+@push('styles')
+<style>
+  div.dataTables_wrapper div.dataTables_processing {
+    background-color: var(--bs-body-bg);
+    color: var(--bs-body-color);
+  }
+  table.dataTable {
+    margin-top: 15px !important;
+    margin-bottom: 15px !important;
+  }
+  .dropdown-menu {
+    z-index: 1050 !important;
+  }
+</style>
+@endpush
+
+@push('scripts')
+<script src="{{ asset('js/admin/payments.js') }}"></script>
+@endpush

@@ -8,11 +8,33 @@ use Illuminate\Http\Request;
 
 class TrainController extends Controller
 {
-    public function index()
+    public function index(Request $request)
     {
-        $trains = Train::withCount('carriages')->latest()->get();
+        if ($request->ajax() || $request->wantsJson()) {
+            $query = Train::withCount('carriages');
+            $totalRecords = $query->count();
+            if ($request->filled('search.value')) {
+                $searchValue = $request->input('search.value');
+                $query->where(function ($q) use ($searchValue) {
+                    $q->where('code', 'like', '%'.$searchValue.'%')
+                        ->orWhere('name', 'like', '%'.$searchValue.'%');
+                });
+            }
+            $filteredRecords = $query->count();
+            $query->latest();
+            $start = $request->input('start', 0);
+            $length = $request->input('length', 10);
+            $trains = $query->skip($start)->take($length)->get();
 
-        return view('admin.trains.index', compact('trains'));
+            return response()->json([
+                'draw' => intval($request->input('draw')),
+                'recordsTotal' => $totalRecords,
+                'recordsFiltered' => $filteredRecords,
+                'data' => $trains,
+            ]);
+        }
+
+        return view('admin.trains.index');
     }
 
     public function create()
