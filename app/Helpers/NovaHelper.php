@@ -15,5 +15,5 @@
 
 function template(string $path = '')
 {
-	return url('template/' . $path);
+    return url('template/'.$path);
 }

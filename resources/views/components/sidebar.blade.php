@@ -29,6 +29,61 @@
           </a>
         </li>
 
+        <li class="nav-header">Master Data</li>
+
+        <li class="nav-item">
+          <a href="{{ route('admin.stations.index') }}" class="nav-link{{ request()->routeIs('admin.stations.*') ? ' active' : '' }}">
+            <i class="nav-icon bi bi-geo-alt-fill"></i>
+            <p>Stations</p>
+          </a>
+        </li>
+
+        <li class="nav-item">
+          <a href="{{ route('admin.trains.index') }}" class="nav-link{{ request()->routeIs('admin.trains.*') ? ' active' : '' }}">
+            <i class="nav-icon bi bi-train-front"></i>
+            <p>Trains</p>
+          </a>
+        </li>
+
+        <li class="nav-item">
+          <a href="{{ route('admin.carriages.index') }}" class="nav-link{{ request()->routeIs('admin.carriages.*') ? ' active' : '' }}">
+            <i class="nav-icon bi bi-layers-fill"></i>
+            <p>Carriages</p>
+          </a>
+        </li>
+
+        <li class="nav-header">Routes &amp; Schedules</li>
+
+        <li class="nav-item">
+          <a href="{{ route('admin.routes.index') }}" class="nav-link{{ request()->routeIs('admin.routes.*') ? ' active' : '' }}">
+            <i class="nav-icon bi bi-signpost-2-fill"></i>
+            <p>Routes</p>
+          </a>
+        </li>
+
+        <li class="nav-item">
+          <a href="{{ route('admin.schedules.index') }}" class="nav-link{{ request()->routeIs('admin.schedules.*') ? ' active' : '' }}">
+            <i class="nav-icon bi bi-calendar-event-fill"></i>
+            <p>Schedules</p>
+          </a>
+        </li>
+
+        <li class="nav-header">Transactions</li>
+
+        <li class="nav-item">
+          <a href="{{ route('admin.bookings.index') }}" class="nav-link{{ request()->routeIs('admin.bookings.*') ? ' active' : '' }}">
+            <i class="nav-icon bi bi-receipt"></i>
+            <p>Bookings</p>
+          </a>
+        </li>
+
+        <li class="nav-item">
+          <a href="{{ route('admin.payments.index') }}" class="nav-link{{ request()->routeIs('admin.payments.*') ? ' active' : '' }}">
+            <i class="nav-icon bi bi-credit-card-2-front-fill"></i>
+            <p>Payments</p>
+          </a>
+        </li>
+
         <li class="nav-header">Account</li>
 
         <li class="nav-item">

@@ -13,13 +13,13 @@ use Illuminate\Notifications\Notifiable;
 
 class User extends Authenticatable
 {
-	use HasFactory, Notifiable;
+    use HasFactory, Notifiable;
 
-	protected function casts(): array
-	{
-		return [
-			'email_verified_at' => 'datetime',
-			'password'          => 'hashed',
-		];
-	}
+    protected function casts(): array
+    {
+        return [
+            'email_verified_at' => 'datetime',
+            'password' => 'hashed',
+        ];
+    }
 }

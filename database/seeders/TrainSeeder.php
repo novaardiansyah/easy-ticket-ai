@@ -112,11 +112,13 @@ class TrainSeeder extends Seeder
 
                 for ($row = 1; $count < $carriageData['capacity']; $row++) {
                     foreach ($this->seatCols as $col) {
-                        if ($count >= $carriageData['capacity']) break;
+                        if ($count >= $carriageData['capacity']) {
+                            break;
+                        }
 
                         $seats[] = [
                             'carriage_id' => $carriage->id,
-                            'seat_number' => $row . $col,
+                            'seat_number' => $row.$col,
                             'status' => 'available',
                         ];
 

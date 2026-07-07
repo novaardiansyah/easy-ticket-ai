@@ -1,29 +1,47 @@
 <?php
 
-use Illuminate\Support\Facades\Route;
-use App\Http\Controllers\HomeController;
+use App\Http\Controllers\Admin\BookingController;
+use App\Http\Controllers\Admin\CarriageController;
+use App\Http\Controllers\Admin\PaymentController;
+use App\Http\Controllers\Admin\RouteController;
+use App\Http\Controllers\Admin\ScheduleController;
+use App\Http\Controllers\Admin\StationController;
+use App\Http\Controllers\Admin\TrainController;
+use App\Http\Controllers\Auth\GoogleLoginController;
 use App\Http\Controllers\Auth\LoginController;
 use App\Http\Controllers\Auth\RegisterController;
+use App\Http\Controllers\HomeController;
+use App\Http\Controllers\PageController;
+use Illuminate\Support\Facades\Route;
 
 Route::middleware('guest')->group(function () {
-  Route::prefix('auth')->group(function () {
-    Route::get('google', [\App\Http\Controllers\Auth\GoogleLoginController::class, 'redirect'])->name('auth.google.redirect');
-    Route::get('google/callback', [\App\Http\Controllers\Auth\GoogleLoginController::class, 'callback'])->name('auth.google.callback');
-  });
-  Route::get('login', [LoginController::class, 'showLoginForm'])->name('login');
-  Route::post('login', [LoginController::class, 'login']);
-  Route::get('register', [RegisterController::class, 'showRegistrationForm'])->name('register');
-  Route::post('register', [RegisterController::class, 'sendRegistrationLink']);
-  Route::get('register/success', [RegisterController::class, 'showSuccessPage'])->name('register.success');
-  Route::get('register/setup', [RegisterController::class, 'showSetupForm'])->name('register.setup');
-  Route::post('register/setup', [RegisterController::class, 'setupAccount'])->name('register.setup.submit');
+    Route::prefix('auth')->group(function () {
+        Route::get('google', [GoogleLoginController::class, 'redirect'])->name('auth.google.redirect');
+        Route::get('google/callback', [GoogleLoginController::class, 'callback'])->name('auth.google.callback');
+    });
+    Route::get('login', [LoginController::class, 'showLoginForm'])->name('login');
+    Route::post('login', [LoginController::class, 'login']);
+    Route::get('register', [RegisterController::class, 'showRegistrationForm'])->name('register');
+    Route::post('register', [RegisterController::class, 'sendRegistrationLink']);
+    Route::get('register/success', [RegisterController::class, 'showSuccessPage'])->name('register.success');
+    Route::get('register/setup', [RegisterController::class, 'showSetupForm'])->name('register.setup');
+    Route::post('register/setup', [RegisterController::class, 'setupAccount'])->name('register.setup.submit');
 });
 
-Route::get('privacy-policy', [\App\Http\Controllers\PageController::class, 'privacy'])->name('privacy');
-Route::get('terms-of-service', [\App\Http\Controllers\PageController::class, 'terms'])->name('terms');
+Route::get('privacy-policy', [PageController::class, 'privacy'])->name('privacy');
+Route::get('terms-of-service', [PageController::class, 'terms'])->name('terms');
 
 Route::middleware('auth')->group(function () {
-  Route::get('/', [HomeController::class, 'index'])->name('home');
-  Route::post('logout', [LoginController::class, 'logout'])->name('logout');
-});
+    Route::get('/', [HomeController::class, 'index'])->name('home');
+    Route::post('logout', [LoginController::class, 'logout'])->name('logout');
 
+    Route::prefix('admin')->name('admin.')->group(function () {
+        Route::resource('stations', StationController::class);
+        Route::resource('trains', TrainController::class);
+        Route::resource('carriages', CarriageController::class);
+        Route::resource('routes', RouteController::class);
+        Route::resource('schedules', ScheduleController::class);
+        Route::resource('bookings', BookingController::class)->only(['index', 'show', 'update']);
+        Route::resource('payments', PaymentController::class)->only(['index', 'show']);
+    });
+});
