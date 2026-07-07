@@ -46,22 +46,6 @@
 </div>
 @endsection
 
-@push('styles')
-<style>
-  div.dataTables_wrapper div.dataTables_processing {
-    background-color: var(--bs-body-bg);
-    color: var(--bs-body-color);
-  }
-  table.dataTable {
-    margin-top: 15px !important;
-    margin-bottom: 15px !important;
-  }
-  .dropdown-menu {
-    z-index: 1050 !important;
-  }
-</style>
-@endpush
-
 @push('scripts')
 <script src="{{ asset('js/admin/bookings.js') }}"></script>
 @endpush
