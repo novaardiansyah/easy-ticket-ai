@@ -26,7 +26,24 @@
         </a>
         <div>
           @auth
-            <a href="{{ route('home') }}" class="btn btn-primary btn-sm rounded-pill px-3"><i class="bi bi-grid-1x2-fill me-1.5"></i>Dashboard</a>
+            <div class="dropdown">
+              <button class="btn btn-light btn-sm rounded-pill px-2 d-flex align-items-center gap-2 dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false">
+                <img src="https://ui-avatars.com/api/?name={{ urlencode(auth()->user()->name) }}&background=0d6efd&color=fff&size=64" alt="{{ auth()->user()->name }}" width="28" height="28" class="rounded-circle">
+                <span class="fw-semibold small">{{ auth()->user()->name }}</span>
+              </button>
+              <ul class="dropdown-menu dropdown-menu-end shadow-sm border-0 mt-2" style="min-width: 200px;">
+                <li><h6 class="dropdown-header small text-secondary">Halo, {{ auth()->user()->name }}</h6></li>
+                <li><a class="dropdown-item small" href="{{ url('/profile') }}"><i class="bi bi-person me-2"></i>Profile Saya</a></li>
+                <li><a class="dropdown-item small" href="{{ url('/bookings/history') }}"><i class="bi bi-clock-history me-2"></i>Riwayat Pesanan</a></li>
+                <li><hr class="dropdown-divider"></li>
+                <li>
+                  <form method="POST" action="{{ route('logout') }}" class="m-0">
+                    @csrf
+                    <button type="submit" class="dropdown-item small text-danger"><i class="bi bi-box-arrow-right me-2"></i>Logout</button>
+                  </form>
+                </li>
+              </ul>
+            </div>
           @else
             <a href="{{ route('login') }}" class="btn btn-outline-primary btn-sm rounded-pill px-3 me-2">Masuk</a>
             <a href="{{ route('register') }}" class="btn btn-primary btn-sm rounded-pill px-3">Daftar</a>
