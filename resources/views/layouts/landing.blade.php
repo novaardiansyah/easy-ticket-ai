@@ -75,9 +75,9 @@
           <div class="col-md-3 mb-4">
             <h6 class="fw-semibold">Kontak</h6>
             <ul class="list-unstyled small custom-footer-text">
-              <li class="mb-1"><i class="bi bi-envelope me-1"></i>admin@novaardiansyah.id</li>
-              <li class="mb-1"><i class="bi bi-telephone me-1"></i>0822 6111 1084</li>
-              <li class="mb-1"><i class="bi bi-geo-alt me-1"></i>Tangerang Selatan, Banten, Indonesia</li>
+              <li class="mb-1"><i class="bi bi-envelope me-2"></i><a href="mailto:admin@novaardiansyah.id" class="custom-footer-link text-decoration-none">admin@novaardiansyah.id</a></li>
+              <li class="mb-1"><i class="bi bi-whatsapp me-2"></i><a href="https://wa.me/6282261111084" target="_blank" rel="noopener" class="custom-footer-link text-decoration-none">0822 6111 1084</a></li>
+              <li class="mb-1"><i class="bi bi-geo-alt me-2"></i><a href="https://share.google/nDEjYszlSkEDF51Lc" target="_blank" rel="noopener" class="custom-footer-link text-decoration-none">Tangerang Selatan, Banten, Indonesia</a></li>
             </ul>
           </div>
         </div>
