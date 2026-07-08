@@ -6,28 +6,17 @@
 <link href="https://cdn.jsdelivr.net/npm/sweetalert2@11/dist/sweetalert2.min.css" rel="stylesheet">
 <style>
   .hero-section {
-    background: linear-gradient(135deg, #1a1a2e 0%, #16213e 50%, #0f3460 100%);
-    min-height: 420px;
-    display: flex;
-    align-items: center;
+    background-color: #ffffff;
     position: relative;
     overflow: hidden;
   }
-  .hero-section::before {
-    content: '';
-    position: absolute;
-    top: 0; left: 0; right: 0; bottom: 0;
-    background: url('{{ asset("images/banner/banner-1.png") }}') center/cover no-repeat;
-    opacity: 0.15;
-  }
-  .hero-content { position: relative; z-index: 1; }
   .search-card {
-    margin-top: -60px;
     position: relative;
     z-index: 2;
-    border: none;
+    border: 1px solid #e2e8f0;
     border-radius: 16px;
-    box-shadow: 0 10px 40px rgba(0,0,0,0.15);
+    box-shadow: 0 20px 25px -5px rgba(0,0,0,0.08), 0 10px 10px -5px rgba(0,0,0,0.03);
+    background-color: #ffffff;
   }
   .schedule-card {
     transition: transform 0.2s, box-shadow 0.2s;
@@ -83,45 +72,47 @@
 @endpush
 
 @section('content')
-<div class="hero-section">
-  <div class="container hero-content text-center text-white py-5">
-    <h1 class="display-5 fw-bold mb-3">Perjalanan Anda Dimulai di Sini</h1>
-    <p class="lead mb-0">Pesan tiket kereta api dengan mudah, cepat, dan aman.</p>
+<div class="hero-section py-5">
+  <div class="container">
+    <div class="row align-items-center g-4">
+      <div class="col-lg-5 order-2 order-lg-1">
+        <div class="card search-card p-4">
+          <h4 class="fw-bold mb-3 text-primary"><i class="bi bi-search me-2"></i>Cari Tiket Kereta</h4>
+          <form method="GET" action="{{ route('landing') }}" id="search-form">
+            <div class="mb-3">
+              <label class="form-label fw-semibold small">Stasiun Asal</label>
+              <select name="origin_station_id" id="origin_station_id" class="form-select select2" required>
+                <option value="">Pilih Stasiun Asal</option>
+                @foreach ($stations as $s)
+                <option value="{{ $s->id }}" {{ (string)$originId === (string)$s->id ? 'selected' : '' }}>{{ $s->city }} - {{ $s->name }} ({{ $s->code }})</option>
+                @endforeach
+              </select>
+            </div>
+            <div class="mb-3">
+              <label class="form-label fw-semibold small">Stasiun Tujuan</label>
+              <select name="destination_station_id" id="destination_station_id" class="form-select select2" required>
+                <option value="">Pilih Stasiun Tujuan</option>
+                @foreach ($stations as $s)
+                <option value="{{ $s->id }}" {{ (string)$destinationId === (string)$s->id ? 'selected' : '' }}>{{ $s->city }} - {{ $s->name }} ({{ $s->code }})</option>
+                @endforeach
+              </select>
+            </div>
+            <div class="mb-4">
+              <label class="form-label fw-semibold small">Tanggal Keberangkatan</label>
+              <input type="date" name="departure_date" class="form-control" value="{{ $departureDate ?? '' }}" min="{{ date('Y-m-d') }}" required>
+            </div>
+            <button type="submit" class="btn btn-primary w-100 py-2"><i class="bi bi-search me-2"></i>Cari Jadwal</button>
+          </form>
+        </div>
+      </div>
+      <div class="col-lg-7 order-1 order-lg-2">
+        <img src="{{ asset('images/banner/banner-1.png') }}" class="w-100 h-auto d-block rounded-4 shadow-sm" alt="Easy Ticket AI Banner">
+      </div>
+    </div>
   </div>
 </div>
 
 <div class="container">
-  <div class="card search-card p-4">
-    <form method="GET" action="{{ route('landing') }}" id="search-form">
-      <div class="row g-3 align-items-end">
-        <div class="col-md-4">
-          <label class="form-label fw-semibold small">Stasiun Asal</label>
-          <select name="origin_station_id" id="origin_station_id" class="form-select select2" required>
-            <option value="">Pilih Stasiun Asal</option>
-            @foreach ($stations as $s)
-            <option value="{{ $s->id }}" {{ (string)$originId === (string)$s->id ? 'selected' : '' }}>{{ $s->city }} - {{ $s->name }} ({{ $s->code }})</option>
-            @endforeach
-          </select>
-        </div>
-        <div class="col-md-4">
-          <label class="form-label fw-semibold small">Stasiun Tujuan</label>
-          <select name="destination_station_id" id="destination_station_id" class="form-select select2" required>
-            <option value="">Pilih Stasiun Tujuan</option>
-            @foreach ($stations as $s)
-            <option value="{{ $s->id }}" {{ (string)$destinationId === (string)$s->id ? 'selected' : '' }}>{{ $s->city }} - {{ $s->name }} ({{ $s->code }})</option>
-            @endforeach
-          </select>
-        </div>
-        <div class="col-md-3">
-          <label class="form-label fw-semibold small">Tanggal Keberangkatan</label>
-          <input type="date" name="departure_date" class="form-control" value="{{ $departureDate ?? '' }}" min="{{ date('Y-m-d') }}" required>
-        </div>
-        <div class="col-md-1">
-          <button type="submit" class="btn btn-primary w-100"><i class="bi bi-search"></i></button>
-        </div>
-      </div>
-    </form>
-  </div>
 
   @if ($schedules->isNotEmpty())
   <div class="mt-5">
