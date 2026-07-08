@@ -79,25 +79,25 @@
     <footer class="custom-footer pt-5 pb-3 mt-5">
       <div class="container">
         <div class="row">
-          <div class="col-md-4 mb-4">
-            <div class="mb-3">
-              <img src="{{ asset('app-logo-16x9.png') }}" alt="Easy Ticket AI" height="90" class="d-inline-block">
+          <div class="col-md-6 mb-4">
+            <div class="mb-3" style="margin-top: -8px;">
+              <img src="{{ asset('app-logo-16x9.png') }}" alt="Easy Ticket AI" height="110" class="d-inline-block">
             </div>
-            <p class="custom-footer-text small">Platform pemesanan tiket kereta api online terpercaya. Pesan tiket dengan mudah, cepat, dan aman.</p>
+            <p class="custom-footer-text small">Platform pemesanan tiket kereta api online terpercaya.<br>Pesan tiket dengan mudah, cepat, dan aman.</p>
           </div>
-          <div class="col-md-4 mb-4">
+          <div class="col-md-3 mb-4">
             <h6 class="fw-semibold">Informasi</h6>
             <ul class="list-unstyled small">
               <li class="mb-1"><a href="{{ route('privacy') }}" class="custom-footer-link text-decoration-none">Kebijakan Privasi</a></li>
               <li class="mb-1"><a href="{{ route('terms') }}" class="custom-footer-link text-decoration-none">Ketentuan Layanan</a></li>
             </ul>
           </div>
-          <div class="col-md-4 mb-4">
+          <div class="col-md-3 mb-4">
             <h6 class="fw-semibold">Kontak</h6>
             <ul class="list-unstyled small custom-footer-text">
-              <li class="mb-1"><i class="bi bi-envelope me-1"></i>support@easyticket.ai</li>
-              <li class="mb-1"><i class="bi bi-telephone me-1"></i>(021) 1234-5678</li>
-              <li class="mb-1"><i class="bi bi-geo-alt me-1"></i>Jakarta, Indonesia</li>
+              <li class="mb-1"><i class="bi bi-envelope me-1"></i>admin@novaardiansyah.id</li>
+              <li class="mb-1"><i class="bi bi-telephone me-1"></i>0822 6111 1084</li>
+              <li class="mb-1"><i class="bi bi-geo-alt me-1"></i>Tangerang Selatan, Banten, Indonesia</li>
             </ul>
           </div>
         </div>
