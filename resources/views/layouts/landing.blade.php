@@ -14,40 +14,7 @@
     <link href="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.css" rel="stylesheet">
     <link href="https://cdn.jsdelivr.net/npm/select2-bootstrap-5-theme@1.3.0/dist/select2-bootstrap-5-theme.min.css" rel="stylesheet">
     <link href="https://cdn.jsdelivr.net/npm/flatpickr/dist/flatpickr.min.css" rel="stylesheet">
-    <style>
-      .custom-footer {
-        background-color: #ffffff;
-        color: #475569;
-        border-top: 1px solid #e2e8f0;
-      }
-      .custom-footer h5, .custom-footer h6 {
-        color: #0f172a;
-      }
-      .custom-footer-link {
-        color: #64748b;
-        transition: color 0.2s ease-in-out;
-      }
-      .custom-footer-link:hover {
-        color: #1a73e8;
-        text-decoration: none;
-      }
-      .custom-footer-text {
-        color: #64748b;
-      }
-      .custom-footer-divider {
-        border-color: #e2e8f0 !important;
-        opacity: 1;
-      }
-      .sticky-header {
-        position: sticky;
-        top: 0;
-        z-index: 1000;
-        background-color: rgba(255, 255, 255, 0.8);
-        backdrop-filter: blur(12px);
-        -webkit-backdrop-filter: blur(12px);
-        border-bottom: 1px solid rgba(226, 232, 240, 0.8);
-      }
-    </style>
+    <link href="{{ asset('css/landing.css') }}" rel="stylesheet">
     @stack('styles')
   </head>
   <body>
