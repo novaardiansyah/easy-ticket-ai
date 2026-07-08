@@ -3,7 +3,9 @@
 @section('title', 'Login')
 
 @section('content')
+					<a href="{{ route('landing') }}" class="d-block">
 					<img src="{{ url('app-logo-16x9.png') }}" alt="Easy Ticket AI" class="w-100" style="max-height: 100px; object-fit: contain;" />
+				</a>
 
           <p class="login-box-msg">Sign in to start your session</p>
 
