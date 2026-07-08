@@ -8,7 +8,7 @@
   .hero-section {
     background-color: #ffffff;
     position: relative;
-    height: 580px;
+    height: 500px;
   }
   .hero-banner-img {
     width: 100%;
@@ -42,7 +42,7 @@
   @media (min-width: 768px) {
     .search-card-wrapper {
       position: absolute;
-      bottom: 40px;
+      bottom: -30px;
       left: 0;
       right: 0;
       z-index: 10;
@@ -159,9 +159,9 @@
 
 @section('content')
 <div class="hero-section">
-  <img src="{{ asset('images/banner/banner-4.png') }}" class="hero-banner-img" alt="Easy Ticket AI Banner">
+  <img src="{{ asset('images/banner/banner-5.webp') }}" class="hero-banner-img mb-4 mb-md-0" alt="Easy Ticket AI Banner">
   <div class="search-card-wrapper">
-    <div class="container" style="max-width: 1140px;">
+    <div class="container">
       <div class="card search-card p-4">
         <form method="GET" action="{{ route('landing') }}" id="search-form">
           <div class="row g-3 align-items-end">
@@ -197,7 +197,7 @@
   </div>
 </div>
 
-<div class="container">
+<div class="container pt-md-4">
 
   @if ($schedules->isNotEmpty())
   <div class="mt-5">
