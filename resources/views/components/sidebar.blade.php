@@ -1,6 +1,6 @@
 <aside class="app-sidebar bg-body-secondary shadow" data-bs-theme="dark">
   <div class="sidebar-brand">
-    <a href="{{ route('home') }}" class="brand-link">
+    <a href="{{ route('admin.dashboard') }}" class="brand-link">
       <img
         src="{{ url('app-logo-1x1.png') }}"
         alt="Easy Ticket AI Logo"
@@ -23,7 +23,7 @@
         <li class="nav-header">Main Menu</li>
 
         <li class="nav-item">
-          <a href="{{ route('home') }}" class="nav-link{{ request()->routeIs('home') ? ' active' : '' }}">
+          <a href="{{ route('admin.dashboard') }}" class="nav-link{{ request()->routeIs('admin.dashboard') ? ' active' : '' }}">
             <i class="nav-icon bi bi-palette"></i>
             <p>Dashboard</p>
           </a>

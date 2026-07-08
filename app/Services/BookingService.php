@@ -11,7 +11,7 @@ use Illuminate\Support\Str;
 
 class BookingService
 {
-	public function bookTicket(array $data, int $userId): Booking
+	public function bookTicket(array $data, ?int $userId): Booking
 	{
 		$schedule      = Schedule::findOrFail($data['schedule_id']);
 		$bookingStatus = $data['payment_status'] === 'success' ? 'paid' : 'pending';
