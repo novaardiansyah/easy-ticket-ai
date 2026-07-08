@@ -8,7 +8,27 @@
   .hero-section {
     background-color: #ffffff;
     position: relative;
-    overflow: hidden;
+    height: 580px;
+  }
+  .hero-banner-img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    object-position: center;
+    display: block;
+  }
+  @media (max-width: 991.98px) {
+    .hero-section {
+      height: 400px;
+    }
+  }
+  @media (max-width: 767.98px) {
+    .hero-section {
+      height: auto;
+    }
+    .hero-banner-img {
+      height: auto;
+    }
   }
   .search-card {
     position: relative;
@@ -17,7 +37,24 @@
     border-radius: 16px;
     box-shadow: 0 20px 25px -5px rgba(0,0,0,0.08), 0 10px 10px -5px rgba(0,0,0,0.03);
     background-color: #ffffff;
+    padding: 24px !important;
   }
+  @media (min-width: 768px) {
+    .search-card-wrapper {
+      position: absolute;
+      bottom: 40px;
+      left: 0;
+      right: 0;
+      z-index: 10;
+    }
+    .search-card {
+      padding: 32px !important;
+      border-radius: 20px !important;
+      box-shadow: 0 20px 40px rgba(0,0,0,0.15) !important;
+    }
+  }
+
+
   .schedule-card {
     transition: transform 0.2s, box-shadow 0.2s;
     border-radius: 12px;
@@ -68,18 +105,67 @@
     padding: 2px 12px;
     font-size: 0.8rem;
   }
+  .flatpickr-calendar {
+    border: 1px solid #e2e8f0 !important;
+    box-shadow: 0 10px 15px -3px rgba(0,0,0,0.05), 0 4px 6px -2px rgba(0,0,0,0.02) !important;
+    border-radius: 12px !important;
+    background: #ffffff !important;
+    font-family: inherit !important;
+    padding: 8px !important;
+  }
+  .flatpickr-day.selected, 
+  .flatpickr-day.startRange, 
+  .flatpickr-day.endRange, 
+  .flatpickr-day.selected.inRange, 
+  .flatpickr-day.startRange.inRange, 
+  .flatpickr-day.endRange.inRange, 
+  .flatpickr-day.selected:focus, 
+  .flatpickr-day.startRange:focus, 
+  .flatpickr-day.endRange:focus, 
+  .flatpickr-day.selected:hover, 
+  .flatpickr-day.startRange:hover, 
+  .flatpickr-day.endRange:hover, 
+  .flatpickr-day.prevMonthDay.selected, 
+  .flatpickr-day.nextMonthDay.selected {
+    background: #0d6efd !important;
+    border-color: #0d6efd !important;
+    color: #ffffff !important;
+    border-radius: 8px !important;
+  }
+  .flatpickr-day:hover {
+    background: #e3f2fd !important;
+    border-color: transparent !important;
+    color: #0d6efd !important;
+    border-radius: 8px !important;
+  }
+  .flatpickr-months .flatpickr-month {
+    background: #ffffff !important;
+    color: #0f172a !important;
+  }
+  .flatpickr-current-month .flatpickr-monthDropdown-months {
+    font-weight: 600 !important;
+  }
+  .flatpickr-weekday {
+    color: #64748b !important;
+    font-weight: 500 !important;
+  }
+  .flatpickr-day.today {
+    border-color: #0d6efd !important;
+    color: #0d6efd !important;
+    border-radius: 8px !important;
+  }
 </style>
 @endpush
 
 @section('content')
-<div class="hero-section py-5">
-  <div class="container">
-    <div class="row align-items-center g-4">
-      <div class="col-lg-5 order-2 order-lg-1">
-        <div class="card search-card p-4">
-          <h4 class="fw-bold mb-3 text-primary"><i class="bi bi-search me-2"></i>Cari Tiket Kereta</h4>
-          <form method="GET" action="{{ route('landing') }}" id="search-form">
-            <div class="mb-3">
+<div class="hero-section">
+  <img src="{{ asset('images/banner/banner-4.png') }}" class="hero-banner-img" alt="Easy Ticket AI Banner">
+  <div class="search-card-wrapper">
+    <div class="container" style="max-width: 1140px;">
+      <div class="card search-card p-4">
+        <form method="GET" action="{{ route('landing') }}" id="search-form">
+          <div class="row g-3 align-items-end">
+            <div class="col-md-3">
               <label class="form-label fw-semibold small">Stasiun Asal</label>
               <select name="origin_station_id" id="origin_station_id" class="form-select select2" required>
                 <option value="">Pilih Stasiun Asal</option>
@@ -88,7 +174,7 @@
                 @endforeach
               </select>
             </div>
-            <div class="mb-3">
+            <div class="col-md-3">
               <label class="form-label fw-semibold small">Stasiun Tujuan</label>
               <select name="destination_station_id" id="destination_station_id" class="form-select select2" required>
                 <option value="">Pilih Stasiun Tujuan</option>
@@ -97,16 +183,15 @@
                 @endforeach
               </select>
             </div>
-            <div class="mb-4">
+            <div class="col-md-3">
               <label class="form-label fw-semibold small">Tanggal Keberangkatan</label>
-              <input type="date" name="departure_date" class="form-control" value="{{ $departureDate ?? '' }}" min="{{ date('Y-m-d') }}" required>
+              <input type="text" name="departure_date" id="departure_date" class="form-control bg-white" value="{{ $departureDate ?? '' }}" placeholder="Pilih Tanggal" required readonly style="background-color: #ffffff !important;">
             </div>
-            <button type="submit" class="btn btn-primary w-100 py-2"><i class="bi bi-search me-2"></i>Cari Jadwal</button>
-          </form>
-        </div>
-      </div>
-      <div class="col-lg-7 order-1 order-lg-2">
-        <img src="{{ asset('images/banner/banner-1.png') }}" class="w-100 h-auto d-block rounded-4 shadow-sm" alt="Easy Ticket AI Banner">
+            <div class="col-md-3">
+              <button type="submit" class="btn btn-primary w-100 py-2"><i class="bi bi-search me-2"></i>Cari</button>
+            </div>
+          </div>
+        </form>
       </div>
     </div>
   </div>
@@ -163,6 +248,90 @@
     <i class="bi bi-search text-secondary" style="font-size: 3rem;"></i>
     <h5 class="mt-3 text-secondary">Tidak ada jadwal tersedia</h5>
     <p class="text-secondary">Coba cari dengan stasiun atau tanggal lain.</p>
+  </div>
+  @else
+  <div class="my-5">
+    <h4 class="fw-bold mb-4"><i class="bi bi-star-fill text-warning me-2"></i>Rute Favorit</h4>
+    <div class="row g-4">
+      <div class="col-md-4">
+        <div class="card border shadow-sm h-100">
+          <div class="card-body">
+            <span class="badge bg-primary-subtle text-primary mb-2">Terpopuler</span>
+            <h5 class="fw-bold mb-1">Jakarta &rarr; Bandung</h5>
+            <p class="text-secondary small mb-3">Mulai dari Rp 150.000</p>
+            <button type="button" class="btn btn-outline-primary btn-sm w-100" onclick="document.getElementById('origin_station_id').value='1'; document.getElementById('destination_station_id').value='2'; $('#origin_station_id, #destination_station_id').trigger('change');">Cari Jadwal</button>
+          </div>
+        </div>
+      </div>
+      <div class="col-md-4">
+        <div class="card border shadow-sm h-100">
+          <div class="card-body">
+            <span class="badge bg-success-subtle text-success mb-2">Paling Nyaman</span>
+            <h5 class="fw-bold mb-1">Bandung &rarr; Surabaya</h5>
+            <p class="text-secondary small mb-3">Mulai dari Rp 320.000</p>
+            <button type="button" class="btn btn-outline-primary btn-sm w-100" onclick="document.getElementById('origin_station_id').value='2'; document.getElementById('destination_station_id').value='3'; $('#origin_station_id, #destination_station_id').trigger('change');">Cari Jadwal</button>
+          </div>
+        </div>
+      </div>
+      <div class="col-md-4">
+        <div class="card border shadow-sm h-100">
+          <div class="card-body">
+            <span class="badge bg-warning-subtle text-warning mb-2">Pemandangan Indah</span>
+            <h5 class="fw-bold mb-1">Jakarta &rarr; Yogyakarta</h5>
+            <p class="text-secondary small mb-3">Mulai dari Rp 280.000</p>
+            <button type="button" class="btn btn-outline-primary btn-sm w-100" onclick="document.getElementById('origin_station_id').value='1'; document.getElementById('destination_station_id').value='4'; $('#origin_station_id, #destination_station_id').trigger('change');">Cari Jadwal</button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="my-5">
+    <h4 class="fw-bold mb-4"><i class="bi bi-newspaper text-primary me-2"></i>Berita & Promo Terbaru</h4>
+    <div class="row g-4">
+      <div class="col-md-4">
+        <div class="card border shadow-sm h-100">
+          <div class="card-body p-0">
+            <div class="bg-primary text-white p-4 text-center rounded-top" style="height: 120px; display: flex; align-items: center; justify-content: center;">
+              <i class="bi bi-percent fs-1"></i>
+            </div>
+            <div class="p-3">
+              <span class="text-primary fw-semibold small">PROMO</span>
+              <h6 class="fw-bold mt-1 mb-2">Promo Liburan Akhir Pekan: Diskon Tiket Hingga 20%</h6>
+              <p class="text-secondary small mb-0">Nikmati diskon khusus untuk keberangkatan hari Sabtu & Minggu selama bulan Juli.</p>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="col-md-4">
+        <div class="card border shadow-sm h-100">
+          <div class="card-body p-0">
+            <div class="bg-success text-white p-4 text-center rounded-top" style="height: 120px; display: flex; align-items: center; justify-content: center;">
+              <i class="bi bi-wallet2 fs-1"></i>
+            </div>
+            <div class="p-3">
+              <span class="text-success fw-semibold small">PENGUMUMAN</span>
+              <h6 class="fw-bold mt-1 mb-2">Integrasi Pembayaran E-Wallet Baru Kini Aktif</h6>
+              <p class="text-secondary small mb-0">Pemesanan tiket kereta api kini lebih mudah dengan pembayaran instan via dompet digital.</p>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="col-md-4">
+        <div class="card border shadow-sm h-100">
+          <div class="card-body p-0">
+            <div class="bg-info text-white p-4 text-center rounded-top" style="height: 120px; display: flex; align-items: center; justify-content: center;">
+              <i class="bi bi-lightbulb fs-1"></i>
+            </div>
+            <div class="p-3">
+              <span class="text-info fw-semibold small">TIPS PERJALANAN</span>
+              <h6 class="fw-bold mt-1 mb-2">Tips Perjalanan Aman & Nyaman dengan Kereta Cepat</h6>
+              <p class="text-secondary small mb-0">Beberapa persiapan penting sebelum bepergian untuk menghindari antrean stasiun.</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
   </div>
   @endif
 </div>
@@ -332,21 +501,41 @@
   $(document).ready(function() {
     $('.select2').select2({ theme: 'bootstrap-5', width: '100%' });
 
+    flatpickr("#departure_date", {
+      locale: "id",
+      minDate: "today",
+      altInput: true,
+      altFormat: "l, d F Y",
+      dateFormat: "Y-m-d",
+      disableMobile: true
+    });
+
     $('#destination_station_id').on('change', function() {
       var val = $(this).val();
-      $('#origin_station_id option').each(function() {
-        if ($(this).val() === val) {
-          $('#destination_station_id').val('').trigger('change');
-          Swal.fire({
-            icon: 'warning',
-            title: 'Perhatian',
-            text: 'Stasiun tujuan tidak boleh sama dengan stasiun asal.',
-            timer: 2000,
-            showConfirmButton: false
-          });
-          return false;
-        }
-      });
+      if (val && val === $('#origin_station_id').val()) {
+        $('#destination_station_id').val('').trigger('change');
+        Swal.fire({
+          icon: 'warning',
+          title: 'Perhatian',
+          text: 'Stasiun tujuan tidak boleh sama dengan stasiun asal.',
+          timer: 2000,
+          showConfirmButton: false
+        });
+      }
+    });
+
+    $('#origin_station_id').on('change', function() {
+      var val = $(this).val();
+      if (val && val === $('#destination_station_id').val()) {
+        $('#origin_station_id').val('').trigger('change');
+        Swal.fire({
+          icon: 'warning',
+          title: 'Perhatian',
+          text: 'Stasiun asal tidak boleh sama dengan stasiun tujuan.',
+          timer: 2000,
+          showConfirmButton: false
+        });
+      }
     });
 
     $(document).on('click', '.btn-book', function() {
@@ -425,6 +614,8 @@
     @if(session('success'))
     Swal.fire({ icon: 'success', title: 'Berhasil!', text: '{{ session('success') }}', timer: 3000, showConfirmButton: false });
     @endif
+
+
   });
 </script>
 @endpush

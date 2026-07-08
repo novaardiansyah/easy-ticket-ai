@@ -13,10 +13,8 @@
     <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.13.1/font/bootstrap-icons.min.css" rel="stylesheet">
     <link href="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.css" rel="stylesheet">
     <link href="https://cdn.jsdelivr.net/npm/select2-bootstrap-5-theme@1.3.0/dist/select2-bootstrap-5-theme.min.css" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/flatpickr/dist/flatpickr.min.css" rel="stylesheet">
     <style>
-      body {
-        background-color: #f4f5f7;
-      }
       .custom-footer {
         background-color: #ffffff;
         color: #475569;
@@ -40,37 +38,35 @@
         border-color: #e2e8f0 !important;
         opacity: 1;
       }
+      .sticky-header {
+        position: sticky;
+        top: 0;
+        z-index: 1000;
+        background-color: rgba(255, 255, 255, 0.8);
+        backdrop-filter: blur(12px);
+        -webkit-backdrop-filter: blur(12px);
+        border-bottom: 1px solid rgba(226, 232, 240, 0.8);
+      }
     </style>
     @stack('styles')
   </head>
   <body>
-    <nav class="navbar navbar-expand-lg navbar-light bg-white sticky-top border-bottom py-2" style="box-shadow: 0 4px 20px -2px rgba(0, 0, 0, 0.05);">
-      <div class="container">
-        <a class="navbar-brand fw-bold text-primary fs-5" href="{{ route('landing') }}">
-          <i class="bi bi-train-front me-1"></i>Easy Ticket AI
+
+    <header class="sticky-header py-3">
+      <div class="container d-flex justify-content-between align-items-center">
+        <a href="{{ route('landing') }}" class="text-decoration-none d-flex align-items-center">
+          <span class="fs-5 fw-bold text-primary"><i class="bi bi-ticket-perforated-fill me-2"></i>Easy Ticket AI</span>
         </a>
-        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
-          <span class="navbar-toggler-icon"></span>
-        </button>
-        <div class="collapse navbar-collapse" id="navbarNav">
-          <ul class="navbar-nav ms-auto align-items-lg-center">
-            @auth
-              @if (auth()->user()->isAdmin())
-              <li class="nav-item">
-                <a class="nav-link fw-semibold text-secondary" href="{{ route('admin.dashboard') }}"><i class="bi bi-speedometer2 me-1"></i>Dashboard</a>
-              </li>
-              @endif
-              <li class="nav-item">
-                <a class="btn btn-outline-danger btn-sm ms-lg-2 px-3 rounded-pill" href="#" onclick="event.preventDefault(); document.getElementById('logout-form').submit();">
-                  <i class="bi bi-box-arrow-right me-1"></i>Logout
-                </a>
-                <form id="logout-form" action="{{ route('logout') }}" method="POST" class="d-none">@csrf</form>
-              </li>
-            @endauth
-          </ul>
+        <div>
+          @auth
+            <a href="{{ route('home') }}" class="btn btn-primary btn-sm rounded-pill px-3"><i class="bi bi-grid-1x2-fill me-1.5"></i>Dashboard</a>
+          @else
+            <a href="{{ route('login') }}" class="btn btn-outline-primary btn-sm rounded-pill px-3 me-2">Masuk</a>
+            <a href="{{ route('register') }}" class="btn btn-primary btn-sm rounded-pill px-3">Daftar</a>
+          @endauth
         </div>
       </div>
-    </nav>
+    </header>
 
     <main>
       @yield('content')
@@ -110,6 +106,8 @@
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.7/dist/js/bootstrap.bundle.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    <script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>
+    <script src="https://npmcdn.com/flatpickr/dist/l10n/id.js"></script>
     @stack('scripts')
   </body>
 </html>
