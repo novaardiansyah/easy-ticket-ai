@@ -1,6 +1,6 @@
 @extends('layouts.landing')
 
-@section('title', 'Pesan Tiket Kereta Api Online')
+@section('title', 'Hasil Pencarian Tiket')
 
 @push('styles')
 <link href="https://cdn.jsdelivr.net/npm/sweetalert2@11/dist/sweetalert2.min.css" rel="stylesheet">
@@ -98,90 +98,6 @@
     <i class="bi bi-search text-secondary" style="font-size: 3rem;"></i>
     <h5 class="mt-3 text-secondary">Tidak ada jadwal tersedia</h5>
     <p class="text-secondary">Coba cari dengan stasiun atau tanggal lain.</p>
-  </div>
-  @else
-  <div class="my-5">
-    <h4 class="fw-bold mb-4"><i class="bi bi-star-fill text-warning me-2"></i>Rute Favorit</h4>
-    <div class="row g-4">
-      <div class="col-md-4">
-        <div class="card border shadow-sm h-100">
-          <div class="card-body">
-            <span class="badge bg-primary-subtle text-primary mb-2">Terpopuler</span>
-            <h5 class="fw-bold mb-1">Jakarta &rarr; Bandung</h5>
-            <p class="text-secondary small mb-3">Mulai dari Rp 150.000</p>
-            <button type="button" class="btn btn-outline-primary btn-sm w-100" onclick="document.getElementById('origin_station_id').value='1'; document.getElementById('destination_station_id').value='2'; $('#origin_station_id, #destination_station_id').trigger('change');">Cari Jadwal</button>
-          </div>
-        </div>
-      </div>
-      <div class="col-md-4">
-        <div class="card border shadow-sm h-100">
-          <div class="card-body">
-            <span class="badge bg-success-subtle text-success mb-2">Paling Nyaman</span>
-            <h5 class="fw-bold mb-1">Bandung &rarr; Surabaya</h5>
-            <p class="text-secondary small mb-3">Mulai dari Rp 320.000</p>
-            <button type="button" class="btn btn-outline-primary btn-sm w-100" onclick="document.getElementById('origin_station_id').value='2'; document.getElementById('destination_station_id').value='3'; $('#origin_station_id, #destination_station_id').trigger('change');">Cari Jadwal</button>
-          </div>
-        </div>
-      </div>
-      <div class="col-md-4">
-        <div class="card border shadow-sm h-100">
-          <div class="card-body">
-            <span class="badge bg-warning-subtle text-warning mb-2">Pemandangan Indah</span>
-            <h5 class="fw-bold mb-1">Jakarta &rarr; Yogyakarta</h5>
-            <p class="text-secondary small mb-3">Mulai dari Rp 280.000</p>
-            <button type="button" class="btn btn-outline-primary btn-sm w-100" onclick="document.getElementById('origin_station_id').value='1'; document.getElementById('destination_station_id').value='4'; $('#origin_station_id, #destination_station_id').trigger('change');">Cari Jadwal</button>
-          </div>
-        </div>
-      </div>
-    </div>
-  </div>
-
-  <div class="my-5">
-    <h4 class="fw-bold mb-4"><i class="bi bi-newspaper text-primary me-2"></i>Berita & Promo Terbaru</h4>
-    <div class="row g-4">
-      <div class="col-md-4">
-        <div class="card border shadow-sm h-100">
-          <div class="card-body p-0">
-            <div class="bg-primary text-white p-4 text-center rounded-top" style="height: 120px; display: flex; align-items: center; justify-content: center;">
-              <i class="bi bi-percent fs-1"></i>
-            </div>
-            <div class="p-3">
-              <span class="text-primary fw-semibold small">PROMO</span>
-              <h6 class="fw-bold mt-1 mb-2">Promo Liburan Akhir Pekan: Diskon Tiket Hingga 20%</h6>
-              <p class="text-secondary small mb-0">Nikmati diskon khusus untuk keberangkatan hari Sabtu & Minggu selama bulan Juli.</p>
-            </div>
-          </div>
-        </div>
-      </div>
-      <div class="col-md-4">
-        <div class="card border shadow-sm h-100">
-          <div class="card-body p-0">
-            <div class="bg-success text-white p-4 text-center rounded-top" style="height: 120px; display: flex; align-items: center; justify-content: center;">
-              <i class="bi bi-wallet2 fs-1"></i>
-            </div>
-            <div class="p-3">
-              <span class="text-success fw-semibold small">PENGUMUMAN</span>
-              <h6 class="fw-bold mt-1 mb-2">Integrasi Pembayaran E-Wallet Baru Kini Aktif</h6>
-              <p class="text-secondary small mb-0">Pemesanan tiket kereta api kini lebih mudah dengan pembayaran instan via dompet digital.</p>
-            </div>
-          </div>
-        </div>
-      </div>
-      <div class="col-md-4">
-        <div class="card border shadow-sm h-100">
-          <div class="card-body p-0">
-            <div class="bg-info text-white p-4 text-center rounded-top" style="height: 120px; display: flex; align-items: center; justify-content: center;">
-              <i class="bi bi-lightbulb fs-1"></i>
-            </div>
-            <div class="p-3">
-              <span class="text-info fw-semibold small">TIPS PERJALANAN</span>
-              <h6 class="fw-bold mt-1 mb-2">Tips Perjalanan Aman & Nyaman dengan Kereta Cepat</h6>
-              <p class="text-secondary small mb-0">Beberapa persiapan penting sebelum bepergian untuk menghindari antrean stasiun.</p>
-            </div>
-          </div>
-        </div>
-      </div>
-    </div>
   </div>
   @endif
 </div>

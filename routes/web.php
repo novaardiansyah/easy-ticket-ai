@@ -16,6 +16,7 @@ use App\Http\Controllers\PageController;
 use Illuminate\Support\Facades\Route;
 
 Route::get('/', [LandingController::class, 'index'])->name('landing');
+Route::get('/search', [LandingController::class, 'search'])->name('landing.search');
 Route::get('/get-seats', [LandingController::class, 'getSeats'])->name('landing.get-seats');
 Route::post('/bookings', [LandingController::class, 'storeBooking'])->name('landing.bookings.store');
 Route::get('/bookings/success/{bookingCode}', [LandingController::class, 'bookingSuccess'])->name('landing.bookings.success');

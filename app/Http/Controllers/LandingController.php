@@ -16,11 +16,11 @@ class LandingController extends Controller
 {
   public function index(Request $request): View
   {
-    $stations        = Station::orderBy('name')->get();
-    $schedules       = collect();
-    $originId        = $request->input('origin_station_id');
-    $destinationId   = $request->input('destination_station_id');
-    $departureDate   = $request->input('departure_date');
+    $stations = Station::orderBy('name')->get();
+    $schedules = collect();
+    $originId = $request->input('origin_station_id');
+    $destinationId = $request->input('destination_station_id');
+    $departureDate = $request->input('departure_date');
 
     if ($originId && $destinationId && $departureDate) {
       $schedules = Schedule::with(['train', 'route.originStation', 'route.destinationStation'])
@@ -34,6 +34,29 @@ class LandingController extends Controller
     }
 
     return view('landing.index', compact('stations', 'schedules', 'originId', 'destinationId', 'departureDate'));
+  }
+
+  public function search(Request $request): View
+  {
+    $stations = Station::orderBy('name')->get();
+    $originId = $request->input('origin_station_id');
+    $destinationId = $request->input('destination_station_id');
+    $departureDate = $request->input('departure_date');
+
+    if ($originId && $destinationId && $departureDate) {
+      $schedules = Schedule::with(['train', 'route.originStation', 'route.destinationStation'])
+        ->whereHas('route', function ($q) use ($originId, $destinationId) {
+          $q->where('origin_station_id', $originId)
+            ->where('destination_station_id', $destinationId);
+        })
+        ->whereDate('departure_time', $departureDate)
+        ->orderBy('departure_time')
+        ->get();
+    } else {
+      $schedules = collect();
+    }
+
+    return view('landing.search-results', compact('stations', 'schedules', 'originId', 'destinationId', 'departureDate'));
   }
 
   public function getSeats(Request $request): JsonResponse
