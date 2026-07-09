@@ -224,16 +224,17 @@
      data-flash-success="{{ session('success') }}"></div>
 <script src="{{ asset('js/landing-index.js') }}"></script>
 <script>
+  if ('scrollRestoration' in history) {
+    history.scrollRestoration = 'manual';
+  }
   window.addEventListener('load', function () {
-    setTimeout(function () {
-      var el = document.getElementById('search-results');
-      if (el) {
-        var header = document.querySelector('.sticky-header');
-        var offset = header ? header.offsetHeight : 0;
-        var top = el.getBoundingClientRect().top + window.pageYOffset - offset - 20;
-        window.scrollTo({ top: top, behavior: 'smooth' });
-      }
-    }, 100);
+    var el = document.getElementById('search-results');
+    if (el) {
+      var header = document.querySelector('.sticky-header');
+      var offset = header ? header.offsetHeight : 0;
+      var top = el.getBoundingClientRect().top + window.pageYOffset - offset - 20;
+      window.scrollTo({ top: top, behavior: 'smooth' });
+    }
   });
 </script>
 @endpush
