@@ -13,6 +13,13 @@
  * Copyright (c) 2026 Nova Ardiansyah, Org
  */
 
+if (!function_exists('formatRupiah')) {
+    function formatRupiah($value, int $decimals = 0): string
+    {
+        return 'Rp' . number_format((float) $value, $decimals, ',', '.');
+    }
+}
+
 function template(string $path = '')
 {
     return url('template/'.$path);
