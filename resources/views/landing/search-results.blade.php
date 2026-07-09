@@ -48,7 +48,7 @@
   </div>
 </div>
 
-<div class="container pt-md-4">
+<div class="container pt-md-4" id="search-results">
 
   @if ($schedules->isNotEmpty())
   <div class="mt-5">
@@ -226,7 +226,13 @@
 <script>
   window.addEventListener('load', function () {
     setTimeout(function () {
-      window.scrollBy(0, 450);
+      var el = document.getElementById('search-results');
+      if (el) {
+        var header = document.querySelector('.sticky-header');
+        var offset = header ? header.offsetHeight : 0;
+        var top = el.getBoundingClientRect().top + window.pageYOffset - offset - 20;
+        window.scrollTo({ top: top, behavior: 'smooth' });
+      }
     }, 100);
   });
 </script>
