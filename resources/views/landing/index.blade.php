@@ -148,7 +148,7 @@
         <div class="modal-body">
           <div class="alert alert-info d-flex align-items-center py-2 small">
             <i class="bi bi-info-circle me-2"></i>
-            Harga per tiket: <strong class="ms-1" id="modal-base-price">Rp 0</strong>
+            Harga per tiket: <strong class="ms-1" id="modal-base-price">Rp0</strong>
           </div>
 
           <h6 class="fw-semibold border-bottom pb-2"><i class="bi bi-person me-1"></i>Data Pemesan</h6>
@@ -177,7 +177,7 @@
           <div id="passengers-container-modal"></div>
 
           <div class="text-end mt-4 pt-2 border-top">
-            <h5 class="fw-bold">Total: <span id="total-price-modal" class="text-primary">Rp 0</span></h5>
+            <h5 class="fw-bold">Total: <span id="total-price-modal" class="text-primary">Rp0</span></h5>
           </div>
 
           <h6 class="fw-semibold border-bottom pb-2 mt-4"><i class="bi bi-credit-card me-1"></i>Metode Pembayaran</h6>

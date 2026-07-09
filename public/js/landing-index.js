@@ -13,9 +13,7 @@ window.addEventListener('DOMContentLoaded', function () {
   let passengerIndex = 0;
   let basePrice = 0;
 
-  function formatRupiah(val) {
-    return 'Rp ' + Number(val).toLocaleString('id-ID');
-  }
+
 
   function populateSeatsDropdown($select) {
     $select.empty().append('<option value="">Pilih Kursi</option>');

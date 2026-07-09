@@ -103,7 +103,7 @@
             <h6 class="fw-semibold border-bottom pb-2"><i class="bi bi-credit-card me-1"></i>Pembayaran</h6>
             <table class="table table-borderless small">
               <tr><td class="text-secondary ps-0">Metode</td><td class="fw-semibold">{{ str_replace('_', ' ', ucfirst($booking->payment->payment_method)) }}</td></tr>
-              <tr><td class="text-secondary ps-0">Total Bayar</td><td class="fw-bold fs-5 text-primary ps-0">Rp {{ number_format($booking->total_price, 0, ',', '.') }}</td></tr>
+              <tr><td class="text-secondary ps-0">Total Bayar</td><td class="fw-bold fs-5 text-primary ps-0">{{ formatRupiah($booking->total_price) }}</td></tr>
             </table>
 
             @if ($booking->payment->payment_method === 'bank_transfer' && $booking->status === 'pending')
