@@ -80,6 +80,18 @@ class LandingController extends Controller
     return view('landing.search-results', compact('stations', 'schedules', 'originId', 'destinationId', 'departureDate'));
   }
 
+  public function createBooking(Request $request): View
+  {
+    $request->validate([
+      'schedule_id' => 'required|exists:schedules,id',
+    ]);
+
+    $schedule = Schedule::with(['train', 'route.originStation', 'route.destinationStation'])
+      ->findOrFail($request->schedule_id);
+
+    return view('landing.booking', compact('schedule'));
+  }
+
   public function getSeats(Request $request): JsonResponse
   {
     $request->validate([
