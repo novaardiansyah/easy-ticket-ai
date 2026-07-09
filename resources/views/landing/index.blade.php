@@ -13,7 +13,8 @@
   <div class="search-card-wrapper">
     <div class="container">
       <div class="card search-card p-4">
-        <form method="GET" action="{{ route('landing.search') }}" id="search-form">
+        <form method="POST" action="{{ route('landing.search.process') }}" id="search-form">
+          @csrf
           <div class="row g-3 align-items-end">
             <div class="col-md-3">
               <label class="form-label fw-semibold small">Stasiun Asal</label>
@@ -48,59 +49,7 @@
 </div>
 
 <div class="container pt-md-4">
-
-  @if ($schedules->isNotEmpty())
-  <div class="mt-5">
-    <h4 class="fw-bold mb-4">
-      <i class="bi bi-calendar-check me-2"></i>
-      {{ $schedules->count() }} Jadwal Ditemukan
-    </h4>
-    <div class="row g-4">
-      @foreach ($schedules as $schedule)
-      <div class="col-lg-6">
-        <div class="card schedule-card border shadow-sm">
-          <div class="card-body">
-            <div class="d-flex justify-content-between align-items-start mb-3">
-              <div>
-                <h5 class="fw-bold mb-1">{{ $schedule->train->name }} ({{ $schedule->train->code }})</h5>
-                <span class="badge bg-secondary">{{ $schedule->train->status }}</span>
-              </div>
-              <h4 class="text-primary fw-bold mb-0">Rp {{ number_format($schedule->base_price, 0, ',', '.') }}</h4>
-            </div>
-            <div class="row align-items-center">
-              <div class="col-4 text-center">
-                <div class="fw-bold fs-5">{{ \Carbon\Carbon::parse($schedule->departure_time)->format('H:i') }}</div>
-                <div class="small text-secondary">{{ $schedule->route->originStation->city }}</div>
-                <div class="small text-secondary">{{ $schedule->route->originStation->code }}</div>
-              </div>
-              <div class="col-4 text-center">
-                <div class="small text-secondary">{{ \Carbon\Carbon::parse($schedule->departure_time)->format('d M Y') }}</div>
-                <div class="my-1"><i class="bi bi-arrow-right fs-5"></i></div>
-                <div class="small text-secondary">{{ \Carbon\Carbon::parse($schedule->arrival_time)->format('d M Y H:i') }}</div>
-              </div>
-              <div class="col-4 text-center">
-                <div class="fw-bold fs-5">{{ \Carbon\Carbon::parse($schedule->arrival_time)->format('H:i') }}</div>
-                <div class="small text-secondary">{{ $schedule->route->destinationStation->city }}</div>
-                <div class="small text-secondary">{{ $schedule->route->destinationStation->code }}</div>
-              </div>
-            </div>
-            <button type="button" class="btn btn-primary w-100 mt-3 btn-book" data-schedule-id="{{ $schedule->id }}" data-base-price="{{ $schedule->base_price }}">
-              <i class="bi bi-ticket-perforated me-1"></i>Pesan Tiket
-            </button>
-          </div>
-        </div>
-      </div>
-      @endforeach
-    </div>
-  </div>
-  @elseif ($originId && $destinationId && $departureDate)
-  <div class="text-center py-5 mt-4">
-    <i class="bi bi-search text-secondary" style="font-size: 3rem;"></i>
-    <h5 class="mt-3 text-secondary">Tidak ada jadwal tersedia</h5>
-    <p class="text-secondary">Coba cari dengan stasiun atau tanggal lain.</p>
-  </div>
-  @else
-  <div class="my-5">
+<div class="my-5">
     <h4 class="fw-bold mb-4"><i class="bi bi-star-fill text-warning me-2"></i>Rute Favorit</h4>
     <div class="row g-4">
       <div class="col-md-4">
@@ -183,7 +132,7 @@
       </div>
     </div>
   </div>
-  @endif
+</div>
 </div>
 
 <div class="modal fade" id="bookingModal" tabindex="-1">

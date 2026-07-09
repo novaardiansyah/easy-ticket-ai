@@ -10,38 +10,61 @@ use App\Services\BookingService;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Crypt;
 use Illuminate\View\View;
 
 class LandingController extends Controller
 {
-  public function index(Request $request): View
+  public function index(): View
   {
     $stations = Station::orderBy('name')->get();
-    $schedules = collect();
-    $originId = $request->input('origin_station_id');
-    $destinationId = $request->input('destination_station_id');
-    $departureDate = $request->input('departure_date');
+    $originId = null;
+    $destinationId = null;
+    $departureDate = null;
 
-    if ($originId && $destinationId && $departureDate) {
-      $schedules = Schedule::with(['train', 'route.originStation', 'route.destinationStation'])
-        ->whereHas('route', function ($q) use ($originId, $destinationId) {
-          $q->where('origin_station_id', $originId)
-            ->where('destination_station_id', $destinationId);
-        })
-        ->whereDate('departure_time', $departureDate)
-        ->orderBy('departure_time')
-        ->get();
-    }
+    return view('landing.index', compact('stations', 'originId', 'destinationId', 'departureDate'));
+  }
 
-    return view('landing.index', compact('stations', 'schedules', 'originId', 'destinationId', 'departureDate'));
+  public function processSearch(Request $request): RedirectResponse
+  {
+    $request->validate([
+      'origin_station_id' => 'required|exists:stations,id',
+      'destination_station_id' => 'required|exists:stations,id',
+      'departure_date' => 'required|date',
+    ]);
+
+    $data = [
+      'origin_station_id' => $request->input('origin_station_id'),
+      'destination_station_id' => $request->input('destination_station_id'),
+      'departure_date' => $request->input('departure_date'),
+    ];
+
+    $encrypted = Crypt::encryptString(json_encode($data));
+
+    return redirect()->route('landing.search', ['data' => $encrypted]);
   }
 
   public function search(Request $request): View
   {
     $stations = Station::orderBy('name')->get();
-    $originId = $request->input('origin_station_id');
-    $destinationId = $request->input('destination_station_id');
-    $departureDate = $request->input('departure_date');
+    $originId = null;
+    $destinationId = null;
+    $departureDate = null;
+    $schedules = collect();
+
+    $encrypted = $request->query('data');
+
+    if ($encrypted) {
+      try {
+        $decrypted = Crypt::decryptString($encrypted);
+        $searchData = json_decode($decrypted, true);
+        $originId = $searchData['origin_station_id'] ?? null;
+        $destinationId = $searchData['destination_station_id'] ?? null;
+        $departureDate = $searchData['departure_date'] ?? null;
+      } catch (\Exception $e) {
+        return redirect()->route('landing');
+      }
+    }
 
     if ($originId && $destinationId && $departureDate) {
       $schedules = Schedule::with(['train', 'route.originStation', 'route.destinationStation'])
@@ -52,8 +75,6 @@ class LandingController extends Controller
         ->whereDate('departure_time', $departureDate)
         ->orderBy('departure_time')
         ->get();
-    } else {
-      $schedules = collect();
     }
 
     return view('landing.search-results', compact('stations', 'schedules', 'originId', 'destinationId', 'departureDate'));

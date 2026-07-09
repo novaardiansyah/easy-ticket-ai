@@ -13,7 +13,8 @@
   <div class="search-card-wrapper">
     <div class="container">
       <div class="card search-card p-4">
-        <form method="GET" action="{{ route('landing.search') }}" id="search-form">
+        <form method="POST" action="{{ route('landing.search.process') }}" id="search-form">
+          @csrf
           <div class="row g-3 align-items-end">
             <div class="col-md-3">
               <label class="form-label fw-semibold small">Stasiun Asal</label>
@@ -222,4 +223,11 @@
      data-bookings-store-url="{{ route('landing.bookings.store') }}"
      data-flash-success="{{ session('success') }}"></div>
 <script src="{{ asset('js/landing-index.js') }}"></script>
+<script>
+  window.addEventListener('load', function () {
+    setTimeout(function () {
+      window.scrollBy(0, 450);
+    }, 100);
+  });
+</script>
 @endpush
