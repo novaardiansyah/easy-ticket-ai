@@ -20,7 +20,7 @@ class LandingController extends Controller
     $stations = Station::orderBy('name')->get();
     $originId = null;
     $destinationId = null;
-    $departureDate = null;
+    $departureDate = now()->addDay()->toDateString();
 
     return view('landing.index', compact('stations', 'originId', 'destinationId', 'departureDate'));
   }

@@ -119,7 +119,7 @@
     history.scrollRestoration = 'manual';
   }
   window.addEventListener('load', function () {
-    var el = document.getElementById('search-results');
+    var el = document.querySelector('.search-card-wrapper');
     if (el) {
       var header = document.querySelector('.sticky-header');
       var offset = header ? header.offsetHeight : 0;
