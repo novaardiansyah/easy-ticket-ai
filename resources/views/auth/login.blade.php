@@ -70,6 +70,12 @@
             <a href="#" class="small text-decoration-none">Forgot password?</a>
             <a href="{{ route('register') }}" class="small text-decoration-none">Register</a>
           </div>
+
+          <hr class="my-4">
+
+          <div class="text-center">
+            <a href="{{ route('landing') }}" class="text-decoration-none small">Back to Home</a>
+          </div>
 @endsection
 
 @push('scripts')

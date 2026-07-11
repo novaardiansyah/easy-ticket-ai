@@ -36,4 +36,10 @@
           <div class="text-center mt-3">
             <a href="{{ route('login') }}" class="small text-decoration-none">Already have an account? Sign In</a>
           </div>
+
+          <hr class="my-4">
+
+          <div class="text-center">
+            <a href="{{ route('landing') }}" class="text-decoration-none small">Back to Home</a>
+          </div>
 @endsection

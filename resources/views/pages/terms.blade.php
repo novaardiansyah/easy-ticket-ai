@@ -108,8 +108,8 @@
       <p>{{ $t['contact'] }}<a href="mailto:{{ $t['contact_link'] }}">{{ $t['contact_link'] }}</a></p>
 
       <div class="text-center mt-4">
-        <a href="{{ route('home') }}" class="btn btn-primary">Back to Home</a>
-      </div>
+              <a href="{{ route('landing') }}" class="btn btn-primary">Back to Home</a>
+            </div>
     </div>
   </div>
 @endsection
