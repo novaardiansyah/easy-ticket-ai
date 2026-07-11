@@ -145,3 +145,9 @@
   color: #0d6efd !important;
   border-radius: 8px !important;
 }
+
+.flatpickr-calendar.animate.arrowLeft.open {
+  min-width: 320px;
+}
+
+
