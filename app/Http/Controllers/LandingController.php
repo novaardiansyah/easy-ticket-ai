@@ -80,14 +80,28 @@ class LandingController extends Controller
     return view('landing.search-results', compact('stations', 'schedules', 'originId', 'destinationId', 'departureDate'));
   }
 
-  public function createBooking(Request $request): View
+  public function createBooking(Request $request): View|\Illuminate\Http\RedirectResponse
   {
-    $request->validate([
-      'schedule_id' => 'required|exists:schedules,id',
-    ]);
+    $encrypted = $request->query('data');
+
+    if (!$encrypted) {
+      return redirect()->route('landing');
+    }
+
+    try {
+      $decrypted  = Crypt::decryptString($encrypted);
+      $data       = json_decode($decrypted, true);
+      $scheduleId = $data['schedule_id'] ?? null;
+    } catch (\Exception $e) {
+      return redirect()->route('landing');
+    }
+
+    if (!$scheduleId) {
+      return redirect()->route('landing');
+    }
 
     $schedule = Schedule::with(['train', 'route.originStation', 'route.destinationStation'])
-      ->findOrFail($request->schedule_id);
+      ->findOrFail($scheduleId);
 
     return view('landing.booking', compact('schedule'));
   }
