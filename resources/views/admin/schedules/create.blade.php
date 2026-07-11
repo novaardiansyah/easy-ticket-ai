@@ -2,12 +2,6 @@
 
 @section('title', 'Create Schedule')
 
-@push('styles')
-<link href="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.css" rel="stylesheet">
-<link href="https://cdn.jsdelivr.net/npm/select2-bootstrap-5-theme@1.3.0/dist/select2-bootstrap-5-theme.min.css" rel="stylesheet">
-<link href="https://cdn.jsdelivr.net/npm/flatpickr/dist/flatpickr.min.css" rel="stylesheet">
-@endpush
-
 @section('content-header')
 <div class="app-content-header">
   <div class="container-fluid">
@@ -81,9 +75,6 @@
 @endsection
 
 @push('scripts')
-<script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
-<script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>
-<script src="https://npmcdn.com/flatpickr/dist/l10n/id.js"></script>
 <script>
 document.addEventListener('DOMContentLoaded', function () {
   $('.select2').select2({ theme: 'bootstrap-5', width: '100%' });
@@ -95,6 +86,7 @@ document.addEventListener('DOMContentLoaded', function () {
     altInput: true,
     altFormat: 'd/m/Y H:i',
     disableMobile: true,
+    position: 'above',
   });
 
   flatpickr('#arrival_time', {
@@ -104,6 +96,7 @@ document.addEventListener('DOMContentLoaded', function () {
     altInput: true,
     altFormat: 'd/m/Y H:i',
     disableMobile: true,
+    position: 'above',
   });
 
   var debounceTimer;
