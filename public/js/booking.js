@@ -164,6 +164,8 @@ window.addEventListener('DOMContentLoaded', function () {
     }
   }
 
+  setStep(1);
+
   $.ajax({
     url: config.getSeatsUrl,
     type: 'GET',
