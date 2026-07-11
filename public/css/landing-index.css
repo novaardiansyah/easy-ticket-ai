@@ -146,8 +146,8 @@
   border-radius: 8px !important;
 }
 
-.flatpickr-calendar.animate.arrowLeft.open {
-  min-width: 320px;
+.flatpickr-calendar.animate.open {
+  min-width: 330px;
 }
 
 .btn-swap-stations {
