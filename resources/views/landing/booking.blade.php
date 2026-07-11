@@ -271,7 +271,7 @@
                 </div>
               </div>
               <div class="col-md-3 text-secondary small">
-                <div><i class="bi bi-calendar3 me-1"></i>{{ \Carbon\Carbon::parse($schedule->departure_time)->format('d M Y') }}</div>
+                <div><i class="bi bi-calendar3 me-1"></i>{{ \Carbon\Carbon::parse($schedule->departure_time)->format('d M Y') }} &rarr; {{ \Carbon\Carbon::parse($schedule->arrival_time)->format('d M Y') }}</div>
                 <div><i class="bi bi-clock me-1"></i>{{ \Carbon\Carbon::parse($schedule->departure_time)->format('H:i') }} WIB &rarr; {{ \Carbon\Carbon::parse($schedule->arrival_time)->format('H:i') }} WIB</div>
               </div>
               <div class="col-md-2 text-md-end">
