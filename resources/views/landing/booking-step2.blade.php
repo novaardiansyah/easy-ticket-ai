@@ -364,4 +364,17 @@
 @push('scripts')
 <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 <script src="{{ asset('js/booking-step2.js') }}"></script>
+@if($errors->any())
+<script>
+  const $btn = $('#btn-submit');
+  const originalText = $('#booking-form').data('original-btn-text') || '<i class="bi bi-check-lg me-1"></i>Pesan Sekarang';
+  $btn.prop('disabled', false).html(originalText);
+  
+  Swal.fire({
+    icon: 'error',
+    title: 'Pemesanan Gagal',
+    text: '{{ $errors->first() }}'
+  });
+</script>
+@endif
 @endpush
