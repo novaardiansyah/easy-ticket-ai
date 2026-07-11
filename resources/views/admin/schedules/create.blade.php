@@ -2,6 +2,12 @@
 
 @section('title', 'Create Schedule')
 
+@push('styles')
+<link href="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.css" rel="stylesheet">
+<link href="https://cdn.jsdelivr.net/npm/select2-bootstrap-5-theme@1.3.0/dist/select2-bootstrap-5-theme.min.css" rel="stylesheet">
+<link href="https://cdn.jsdelivr.net/npm/flatpickr/dist/flatpickr.min.css" rel="stylesheet">
+@endpush
+
 @section('content-header')
 <div class="app-content-header">
   <div class="container-fluid">
@@ -37,11 +43,11 @@
       </div>
       <div class="mb-3">
         <label class="form-label">Route <span class="text-danger">*</span></label>
-        <select name="route_id" class="form-select @error('route_id') is-invalid @enderror" required>
+        <select name="route_id" id="route_id" class="form-select select2 @error('route_id') is-invalid @enderror" required>
           <option value="">Select Route</option>
           @foreach ($routes as $route)
           <option value="{{ $route->id }}" {{ old('route_id') == $route->id ? 'selected' : '' }}>
-            {{ $route->originStation->code ?? '?' }} &rarr; {{ $route->destinationStation->code ?? '?' }}
+            {{ $route->originStation->city ?? '?' }} - {{ $route->originStation->name ?? '?' }} ({{ $route->originStation->code ?? '?' }}) &rarr; {{ $route->destinationStation->city ?? '?' }} - {{ $route->destinationStation->name ?? '?' }} ({{ $route->destinationStation->code ?? '?' }})
           </option>
           @endforeach
         </select>
@@ -49,17 +55,20 @@
       </div>
       <div class="mb-3">
         <label class="form-label">Departure Time <span class="text-danger">*</span></label>
-        <input type="datetime-local" name="departure_time" class="form-control @error('departure_time') is-invalid @enderror" value="{{ old('departure_time') }}" required>
+        <input type="text" name="departure_time" id="departure_time" class="form-control @error('departure_time') is-invalid @enderror" value="{{ old('departure_time') }}" required>
         @error('departure_time')<div class="invalid-feedback">{{ $message }}</div>@enderror
       </div>
       <div class="mb-3">
         <label class="form-label">Arrival Time <span class="text-danger">*</span></label>
-        <input type="datetime-local" name="arrival_time" class="form-control @error('arrival_time') is-invalid @enderror" value="{{ old('arrival_time') }}" required>
+        <input type="text" name="arrival_time" id="arrival_time" class="form-control @error('arrival_time') is-invalid @enderror" value="{{ old('arrival_time') }}" required>
         @error('arrival_time')<div class="invalid-feedback">{{ $message }}</div>@enderror
       </div>
       <div class="mb-3">
-        <label class="form-label">Base Price <span class="text-danger">*</span></label>
-        <input type="number" name="base_price" class="form-control @error('base_price') is-invalid @enderror" value="{{ old('base_price') }}" step="0.01" min="0" required>
+        <label class="form-label" id="base_price_label">
+          Base Price <span class="text-danger">*</span>
+          <small class="text-muted ms-2" id="base_price_hint"></small>
+        </label>
+        <input type="number" name="base_price" id="base_price" class="form-control @error('base_price') is-invalid @enderror" value="{{ old('base_price') }}" step="0.01" min="0" required>
         @error('base_price')<div class="invalid-feedback">{{ $message }}</div>@enderror
       </div>
       <div class="d-flex gap-2">
@@ -70,3 +79,48 @@
   </div>
 </div>
 @endsection
+
+@push('scripts')
+<script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>
+<script src="https://npmcdn.com/flatpickr/dist/l10n/id.js"></script>
+<script>
+document.addEventListener('DOMContentLoaded', function () {
+  $('.select2').select2({ theme: 'bootstrap-5', width: '100%' });
+
+  flatpickr('#departure_time', {
+    locale: 'id',
+    enableTime: true,
+    dateFormat: 'Y-m-d H:i:s',
+    altInput: true,
+    altFormat: 'd/m/Y H:i',
+    disableMobile: true,
+  });
+
+  flatpickr('#arrival_time', {
+    locale: 'id',
+    enableTime: true,
+    dateFormat: 'Y-m-d H:i:s',
+    altInput: true,
+    altFormat: 'd/m/Y H:i',
+    disableMobile: true,
+  });
+
+  var debounceTimer;
+  var priceInput = document.getElementById('base_price');
+  var priceHint = document.getElementById('base_price_hint');
+
+  priceInput.addEventListener('input', function () {
+    clearTimeout(debounceTimer);
+    debounceTimer = setTimeout(function () {
+      var val = priceInput.value.trim();
+      if (val !== '' && !isNaN(val) && Number(val) > 0) {
+        priceHint.textContent = formatRupiah(val);
+      } else {
+        priceHint.textContent = '';
+      }
+    }, 500);
+  });
+});
+</script>
+@endpush
