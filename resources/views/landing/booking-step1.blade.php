@@ -250,21 +250,21 @@
               <div class="row g-3 mb-4">
                 <div class="col-md-6">
                   <label class="form-label small">Nama Lengkap<span class="text-danger">*</span></label>
-                  <input type="text" name="customer_name" class="form-control @error('customer_name') is-invalid @enderror" placeholder="Nama pemesan" value="{{ old('customer_name', session('booking_step1.customer_name')) }}" required>
+                  <input type="text" name="customer_name" class="form-control @error('customer_name') is-invalid @enderror" placeholder="Nama pemesan" value="{{ old('customer_name', $fakeData['customer_name'] ?? session('booking_step1.customer_name')) }}" required>
                   @error('customer_name')
                     <div class="invalid-feedback">{{ $message }}</div>
                   @enderror
                 </div>
                 <div class="col-md-3">
                   <label class="form-label small">Email<span class="text-danger">*</span></label>
-                  <input type="email" name="customer_email" class="form-control @error('customer_email') is-invalid @enderror" placeholder="email@example.com" value="{{ old('customer_email', session('booking_step1.customer_email')) }}" required>
+                  <input type="email" name="customer_email" class="form-control @error('customer_email') is-invalid @enderror" placeholder="email@example.com" value="{{ old('customer_email', $fakeData['customer_email'] ?? session('booking_step1.customer_email')) }}" required>
                   @error('customer_email')
                     <div class="invalid-feedback">{{ $message }}</div>
                   @enderror
                 </div>
                 <div class="col-md-3">
                   <label class="form-label small">No. Telepon<span class="text-danger">*</span></label>
-                  <input type="text" name="customer_phone" class="form-control @error('customer_phone') is-invalid @enderror" placeholder="08xx" value="{{ old('customer_phone', session('booking_step1.customer_phone')) }}" required>
+                  <input type="text" name="customer_phone" class="form-control @error('customer_phone') is-invalid @enderror" placeholder="08xx" value="{{ old('customer_phone', $fakeData['customer_phone'] ?? session('booking_step1.customer_phone')) }}" required>
                   @error('customer_phone')
                     <div class="invalid-feedback">{{ $message }}</div>
                   @enderror
@@ -349,6 +349,8 @@
      data-schedule-id="{{ $schedule->id }}"
      data-base-price="{{ $schedule->base_price }}"
      data-old-passengers='@json(old('passengers', []))'
-     data-errors='@json($errors->toArray())'></div>
+     data-errors='@json($errors->toArray())'
+     data-fake-data='@json($fakeData ?? [])'
+     data-app-env="{{ app()->environment() }}"></div>
 <script src="{{ asset('js/booking-step1.js') }}"></script>
 @endpush
