@@ -9,6 +9,94 @@
   .booking-container {
     max-width: 1000px;
   }
+  .step-indicator {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 2rem;
+    position: relative;
+  }
+  .step-indicator::before {
+    content: '';
+    position: absolute;
+    top: 24px;
+    left: 50px;
+    right: 50px;
+    height: 2px;
+    background-color: #e2e8f0;
+    z-index: 1;
+  }
+  .step-indicator .step-line {
+    position: absolute;
+    top: 24px;
+    left: 50px;
+    height: 2px;
+    background-color: #0d6efd;
+    z-index: 2;
+    transition: width 0.3s ease;
+  }
+  .step {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    position: relative;
+    z-index: 3;
+    flex: 1;
+    color: #94a3b8;
+    font-weight: 500;
+    font-size: 0.8rem;
+  }
+  .step.active {
+    color: #0d6efd;
+  }
+  .step.completed {
+    color: #0d6efd;
+  }
+  .step .step-num {
+    width: 48px;
+    height: 48px;
+    border-radius: 50%;
+    background-color: #f1f5f9;
+    color: #94a3b8;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: 700;
+    font-size: 1rem;
+    margin-bottom: 0.5rem;
+    border: 2px solid #e2e8f0;
+    transition: all 0.3s ease;
+  }
+  .step.active .step-num {
+    background-color: #0d6efd;
+    color: #fff;
+    border-color: #0d6efd;
+  }
+  .step.completed .step-num {
+    background-color: #198754;
+    color: #fff;
+    border-color: #198754;
+  }
+  .step.completed .step-num i {
+    display: inline-block;
+  }
+  .step .step-num i {
+    display: none;
+  }
+  @media (max-width: 767.98px) {
+    .step-indicator::before, .step-indicator .step-line {
+      left: 24px;
+      right: 24px;
+    }
+    .step {
+      font-size: 0.7rem;
+    }
+    .step .step-num {
+      width: 40px;
+      height: 40px;
+      font-size: 0.9rem;
+    }
+  }
   .passenger-card {
     border: 1px solid #e2e8f0;
     border-radius: 12px;
@@ -128,17 +216,20 @@
 
         <!-- Step Indicator -->
         <div class="mb-4">
-          <div class="d-flex align-items-center">
-            <div class="flex-grow-1">
-              <div class="progress" style="height: 4px;">
-                <div class="progress-bar bg-primary" style="width: 0%"></div>
-              </div>
+          <div class="step-indicator" id="step-indicator">
+            <div class="step-line" id="step-line"></div>
+            <div class="step active" data-step="1">
+              <span class="step-num">1</span>
+              <span>Data Pemesan & Penumpang</span>
             </div>
-          </div>
-          <div class="d-flex justify-content-between mt-2">
-            <small class="fw-semibold text-primary">Step 1: Data Pemesan & Penumpang</small>
-            <small class="text-muted">Step 2: Pembayaran</small>
-            <small class="text-muted">Step 3: Konfirmasi</small>
+            <div class="step" data-step="2">
+              <span class="step-num">2</span>
+              <span>Pembayaran</span>
+            </div>
+            <div class="step" data-step="3">
+              <span class="step-num">3</span>
+              <span>Konfirmasi</span>
+            </div>
           </div>
         </div>
 
