@@ -56,7 +56,7 @@
                 <div class="small text-secondary">{{ $schedule->route->destinationStation->code }}</div>
               </div>
             </div>
-            <a href="{{ route('landing.bookings.create', ['data' => Crypt::encryptString(json_encode(['schedule_id' => $schedule->id]))]) }}" class="btn btn-primary w-100 mt-3">
+            <a href="{{ route('landing.bookings.step1', ['data' => Crypt::encryptString(json_encode(['schedule_id' => $schedule->id]))]) }}" class="btn btn-primary w-100 mt-3">
               <i class="bi bi-ticket-perforated me-1"></i>Pesan Tiket
             </a>
           </div>

@@ -19,9 +19,11 @@ Route::get('/', [LandingController::class, 'index'])->name('landing');
 Route::post('/search', [LandingController::class, 'processSearch'])->name('landing.search.process');
 Route::get('/search', [LandingController::class, 'search'])->name('landing.search');
 Route::get('/get-seats', [LandingController::class, 'getSeats'])->name('landing.get-seats');
-Route::get('/bookings/create', [LandingController::class, 'createBooking'])->name('landing.bookings.create');
-Route::post('/bookings', [LandingController::class, 'storeBooking'])->name('landing.bookings.store');
-Route::get('/bookings/success/{bookingCode}', [LandingController::class, 'bookingSuccess'])->name('landing.bookings.success');
+Route::get('/bookings/step-1', [LandingController::class, 'showBookingStep1'])->name('landing.bookings.step1');
+Route::post('/bookings/step-1', [LandingController::class, 'processBookingStep1'])->name('landing.bookings.step1.process');
+Route::get('/bookings/step-2', [LandingController::class, 'showBookingStep2'])->name('landing.bookings.step2');
+Route::post('/bookings/step-2', [LandingController::class, 'processBookingStep2'])->name('landing.bookings.step2.process');
+Route::get('/bookings/success/{bookingCode}', [LandingController::class, 'showBookingStep3'])->name('landing.bookings.step3');
 
 Route::get('privacy-policy', [PageController::class, 'privacy'])->name('privacy');
 Route::get('terms-of-service', [PageController::class, 'terms'])->name('terms');

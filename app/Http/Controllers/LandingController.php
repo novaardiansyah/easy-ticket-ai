@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\Booking;
 use App\Models\Passenger;
 use App\Models\Schedule;
+use App\Models\Seat;
 use App\Models\Station;
 use App\Services\BookingService;
 use Illuminate\Http\JsonResponse;
@@ -179,13 +180,193 @@ class LandingController extends Controller
     $booking = $bookingService->bookTicket($data, auth()->id() ?? null);
 
     if ($request->expectsJson() || $request->ajax()) {
-      return response()->json(['redirect' => route('landing.bookings.success', $booking->booking_code)]);
+      return response()->json(['redirect' => route('landing.bookings.step3', $booking->booking_code)]);
     }
 
-    return redirect()->route('landing.bookings.success', $booking->booking_code);
+    return redirect()->route('landing.bookings.step3', $booking->booking_code);
   }
 
   public function bookingSuccess(string $bookingCode): View
+  {
+    $booking = Booking::with([
+      'schedule.train',
+      'schedule.route.originStation',
+      'schedule.route.destinationStation',
+      'passengers.seat',
+      'payment',
+    ])->where('booking_code', $bookingCode)->firstOrFail();
+
+    return view('landing.success', compact('booking'));
+  }
+
+  // Step-based booking methods
+
+  public function showBookingStep1(Request $request): View|RedirectResponse
+  {
+    $encrypted = $request->query('data');
+
+    if (!$encrypted) {
+      return redirect()->route('landing');
+    }
+
+    try {
+      $decrypted  = Crypt::decryptString($encrypted);
+      $data       = json_decode($decrypted, true);
+      $scheduleId = $data['schedule_id'] ?? null;
+    } catch (\Exception $e) {
+      return redirect()->route('landing');
+    }
+
+    if (!$scheduleId) {
+      return redirect()->route('landing');
+    }
+
+    $schedule = Schedule::with(['train', 'route.originStation', 'route.destinationStation'])
+      ->findOrFail($scheduleId);
+
+    return view('landing.booking-step1', compact('schedule'));
+  }
+
+  public function processBookingStep1(Request $request): RedirectResponse
+  {
+    $request->validate([
+      'schedule_id'       => 'required|exists:schedules,id',
+      'customer_name'     => 'required|string|max:255',
+      'customer_email'    => 'required|email|max:255',
+      'customer_phone'    => 'required|string|max:20',
+      'passengers'        => 'required|array|min:1',
+      'passengers.*.passenger_name'      => 'required|string|max:255',
+      'passengers.*.passenger_id_type'   => 'required|string|in:ktp,passport,sim',
+      'passengers.*.passenger_id_number' => 'required|string|max:50',
+      'passengers.*.seat_id'             => 'required|exists:seats,id',
+    ]);
+
+    $schedule      = Schedule::findOrFail($request->schedule_id);
+    $bookedSeatIds = Passenger::whereHas('booking', function ($q) use ($schedule) {
+      $q->where('schedule_id', $schedule->id)
+        ->whereIn('status', ['pending', 'paid']);
+    })->pluck('seat_id')->toArray();
+
+    // Check if any selected seat is already booked
+    foreach ($request->passengers as $p) {
+      if (in_array($p['seat_id'], $bookedSeatIds)) {
+        return back()->withErrors(['passengers' => 'Salah satu kursi yang dipilih sudah dipesan.'])->withInput();
+      }
+    }
+
+    // Get seat numbers for display in step 2
+    $passengersWithSeats = [];
+    foreach ($request->passengers as $passenger) {
+      $seat = Seat::find($passenger['seat_id']);
+      $passengersWithSeats[] = [
+        'passenger_name'      => $passenger['passenger_name'],
+        'passenger_id_type'   => $passenger['passenger_id_type'],
+        'passenger_id_number' => $passenger['passenger_id_number'],
+        'seat_id'             => $passenger['seat_id'],
+        'seat_number'         => $seat ? $seat->seat_number : '',
+      ];
+    }
+
+    // Store data in session
+    session([
+      'booking_step1' => [
+        'schedule_id'    => $request->schedule_id,
+        'customer_name'  => $request->customer_name,
+        'customer_email' => $request->customer_email,
+        'customer_phone' => $request->customer_phone,
+        'passengers'     => $passengersWithSeats,
+      ]
+    ]);
+
+    // Redirect to step 2 with encrypted schedule_id
+    $encrypted = Crypt::encryptString(json_encode(['schedule_id' => $request->schedule_id]));
+    return redirect()->route('landing.bookings.step2', ['data' => $encrypted]);
+  }
+
+  public function showBookingStep2(Request $request): View|RedirectResponse
+  {
+    // Check if step 1 data exists in session
+    if (!session()->has('booking_step1')) {
+      return redirect()->route('landing')->with('error', 'Silakan mulai dari awal.');
+    }
+
+    $encrypted = $request->query('data');
+
+    if (!$encrypted) {
+      return redirect()->route('landing');
+    }
+
+    try {
+      $decrypted  = Crypt::decryptString($encrypted);
+      $data       = json_decode($decrypted, true);
+      $scheduleId = $data['schedule_id'] ?? null;
+    } catch (\Exception $e) {
+      return redirect()->route('landing');
+    }
+
+    if (!$scheduleId) {
+      return redirect()->route('landing');
+    }
+
+    $schedule    = Schedule::with(['train', 'route.originStation', 'route.destinationStation'])
+      ->findOrFail($scheduleId);
+    $bookingData = session('booking_step1');
+
+    return view('landing.booking-step2', compact('schedule', 'bookingData'));
+  }
+
+  public function processBookingStep2(Request $request, BookingService $bookingService): RedirectResponse
+  {
+    // Check if step 1 data exists in session
+    if (!session()->has('booking_step1')) {
+      return redirect()->route('landing')->with('error', 'Silakan mulai dari awal.');
+    }
+
+    $request->validate([
+      'payment_method' => 'required|string|in:bank_transfer,ewallet',
+    ]);
+
+    $bookingData = session('booking_step1');
+
+    // Prepare data for BookingService
+    $data = [
+      'schedule_id'       => $bookingData['schedule_id'],
+      'customer_name'     => $bookingData['customer_name'],
+      'customer_email'    => $bookingData['customer_email'],
+      'customer_phone'    => $bookingData['customer_phone'],
+      'payment_method'    => $request->payment_method,
+      'payment_status'    => 'pending',
+      'passengers'        => $bookingData['passengers'],
+    ];
+
+    // Double-check seat availability before creating booking
+    $schedule      = Schedule::findOrFail($bookingData['schedule_id']);
+    $bookedSeatIds = Passenger::whereHas('booking', function ($q) use ($schedule) {
+      $q->where('schedule_id', $schedule->id)
+        ->whereIn('status', ['pending', 'paid']);
+    })->pluck('seat_id')->toArray();
+
+    foreach ($bookingData['passengers'] as $p) {
+      if (in_array($p['seat_id'], $bookedSeatIds)) {
+        return back()->withErrors(['error' => 'Salah satu kursi yang dipilih sudah dipesan. Silakan pilih kursi lain.']);
+      }
+    }
+
+    // Create booking
+    try {
+      $booking = $bookingService->bookTicket($data, auth()->id() ?? null);
+
+      // Clear session
+      session()->forget('booking_step1');
+
+      // Redirect to confirmation
+      return redirect()->route('landing.bookings.step3', $booking->booking_code);
+    } catch (\Exception $e) {
+      return back()->withErrors(['error' => 'Terjadi kesalahan saat memproses pemesanan. Silakan coba lagi.']);
+    }
+  }
+
+  public function showBookingStep3(string $bookingCode): View
   {
     $booking = Booking::with([
       'schedule.train',
