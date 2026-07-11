@@ -9,6 +9,10 @@ window.addEventListener('DOMContentLoaded', function () {
     basePrice: parseInt(configEl.dataset.basePrice, 10) || 0
   };
 
+  // Get old passengers data and validation errors from server
+  const oldPassengers = JSON.parse(configEl.dataset.oldPassengers || '[]');
+  const errors = JSON.parse(configEl.dataset.errors || '{}');
+
   let carriagesData = [];
   let passengerIndex = 0;
 
@@ -56,15 +60,33 @@ window.addEventListener('DOMContentLoaded', function () {
     });
   }
 
-  function addPassengerRow() {
+  function addPassengerRow(passengerData = null) {
     passengerIndex++;
     const num = $('#passengers-container').find('.passenger-card').length + 1;
     const html = $('#passenger-template').html()
       .replace(/{index}/g, passengerIndex)
       .replace(/{number}/g, num);
     const $row = $(html);
+
+    // If passenger data provided (from old input), populate the fields
+    if (passengerData) {
+      $row.find('input[name*="[passenger_name]"]').val(passengerData.passenger_name || '');
+      $row.find('select[name*="[passenger_id_type]"]').val(passengerData.passenger_id_type || 'ktp');
+      $row.find('input[name*="[passenger_id_number]"]').val(passengerData.passenger_id_number || '');
+      // Seat will be populated after seats are loaded
+      if (passengerData.seat_id) {
+        $row.data('seat-id', passengerData.seat_id);
+      }
+    }
+
     $('#passengers-container').append($row);
     refreshAllSeatDropdowns();
+
+    // Apply saved seat selection if exists
+    if (passengerData && passengerData.seat_id) {
+      $row.find('select[name*="[seat_id]"]').val(passengerData.seat_id);
+    }
+
     updateTotal();
     toggleRemoveButtons();
   }
@@ -82,38 +104,36 @@ window.addEventListener('DOMContentLoaded', function () {
     $('#total-price').text(formatRupiah(total));
   }
 
-  function validateForm() {
-    const customerName = $('input[name="customer_name"]').val().trim();
-    const customerEmail = $('input[name="customer_email"]').val().trim();
-    const customerPhone = $('input[name="customer_phone"]').val().trim();
-    
-    if (!customerName || !customerEmail || !customerPhone) {
-      Swal.fire({ 
-        icon: 'warning', 
-        title: 'Lengkapi Data', 
-        text: 'Nama, email, dan telepon pemesan wajib diisi.' 
-      });
-      return false;
+  function applyServerErrors() {
+    // Apply customer errors
+    if (errors.customer_name) {
+      $('input[name="customer_name"]').addClass('is-invalid');
+    }
+    if (errors.customer_email) {
+      $('input[name="customer_email"]').addClass('is-invalid');
+    }
+    if (errors.customer_phone) {
+      $('input[name="customer_phone"]').addClass('is-invalid');
     }
 
-    let valid = true;
-    $('#passengers-container .passenger-card').each(function () {
-      const name = $(this).find('input[name*="[passenger_name]"]').val().trim();
-      const idNum = $(this).find('input[name*="[passenger_id_number]"]').val().trim();
-      const seat = $(this).find('select[name*="[seat_id]"]').val();
-      if (!name || !idNum || !seat) valid = false;
-    });
-
-    if (!valid) {
-      Swal.fire({ 
-        icon: 'warning', 
-        title: 'Lengkapi Data', 
-        text: 'Pastikan semua data penumpang dan kursi terisi.' 
+    // Apply passenger errors
+    if (errors.passengers) {
+      Object.keys(errors.passengers).forEach(function (key) {
+        // key format: "0.passenger_name", "1.seat_id", etc.
+        const match = key.match(/^(\d+)\.(.+)$/);
+        if (match) {
+          const index = parseInt(match[1], 10);
+          const field = match[2];
+          const $card = $('#passengers-container .passenger-card').eq(index);
+          if ($card.length) {
+            const $input = $card.find('[name*="[' + field + ']"]');
+            if ($input.length) {
+              $input.addClass('is-invalid');
+            }
+          }
+        }
       });
-      return false;
     }
-
-    return true;
   }
 
   // Initialize: Load seats
@@ -123,14 +143,21 @@ window.addEventListener('DOMContentLoaded', function () {
     data: { schedule_id: config.scheduleId },
     success: function (data) {
       carriagesData = data;
-      addPassengerRow();
+
+      // If there are old passengers from server validation, restore them
+      if (oldPassengers.length > 0) {
+        oldPassengers.forEach(function (passenger, index) {
+          addPassengerRow(passenger);
+        });
+      } else {
+        addPassengerRow();
+      }
+
+      // Apply server-side validation errors
+      applyServerErrors();
     },
     error: function () {
-      Swal.fire({ 
-        icon: 'error', 
-        title: 'Error', 
-        text: 'Gagal memuat data kursi.' 
-      });
+      alert('Gagal memuat data kursi.');
     }
   });
 
@@ -152,13 +179,5 @@ window.addEventListener('DOMContentLoaded', function () {
   // Seat change handler
   $('#passengers-container').on('change', '.seat-select', function () {
     refreshAllSeatDropdowns();
-  });
-
-  // Form submission
-  $('#booking-form').on('submit', function (e) {
-    if (!validateForm()) {
-      e.preventDefault();
-      return false;
-    }
   });
 });
