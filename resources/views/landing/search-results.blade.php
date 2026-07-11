@@ -77,7 +77,7 @@
 
 @push('scripts')
 <div id="landing-config" data-flash-success="{{ session('success') }}"></div>
-<script src="{{ asset('js/landing-index.js') }}"></script>
+<script src="{{ asset('js/landing-index.js?v1.1') }}"></script>
 <script>
   if ('scrollRestoration' in history) {
     history.scrollRestoration = 'manual';
