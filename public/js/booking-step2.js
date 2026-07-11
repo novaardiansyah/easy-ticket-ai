@@ -1,11 +1,18 @@
 window.addEventListener('DOMContentLoaded', function () {
   const $ = window.jQuery;
 
-  // Payment option selection
-  $('.payment-option').on('click', function () {
+  // Payment option selection - use change event on radio for reliable detection
+  $('input[name="payment_method"]').on('change', function () {
     $('.payment-option').removeClass('selected');
-    $(this).addClass('selected');
-    $(this).find('input[type="radio"]').prop('checked', true);
+    $(this).closest('.payment-option').addClass('selected');
+  });
+
+  // Also handle direct clicks on payment option divs (for padding areas)
+  $('.payment-option').on('click', function (e) {
+    // Only handle clicks directly on the div, not on label/radio
+    if (e.target === this) {
+      $(this).find('input[type="radio"]').prop('checked', true).trigger('change');
+    }
   });
 
   // Form submission with loading state
@@ -19,17 +26,4 @@ window.addEventListener('DOMContentLoaded', function () {
     // Store original text in case of error
     $(this).data('original-btn-text', originalText);
   });
-
-  // Handle validation errors
-  @if($errors->any())
-    const $btn = $('#btn-submit');
-    const originalText = $('#booking-form').data('original-btn-text') || '<i class="bi bi-check-lg me-1"></i>Pesan Sekarang';
-    $btn.prop('disabled', false).html(originalText);
-    
-    Swal.fire({
-      icon: 'error',
-      title: 'Pemesanan Gagal',
-      text: '{{ $errors->first() }}'
-    });
-  @endif
 });
