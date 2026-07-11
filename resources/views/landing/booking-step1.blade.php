@@ -238,6 +238,10 @@
           @csrf
           <input type="hidden" name="schedule_id" value="{{ $schedule->id }}">
 
+          @error('passengers')
+            <div class="alert alert-danger py-2 small mb-3">{{ $message }}</div>
+          @enderror
+
           <div class="card border-0 shadow-sm">
             <div class="card-body p-4">
 
@@ -245,16 +249,25 @@
               <h6 class="fw-semibold border-bottom pb-2 mb-4"><i class="bi bi-person me-1"></i>Data Pemesan</h6>
               <div class="row g-3 mb-4">
                 <div class="col-md-6">
-                  <label class="form-label small">Nama Lengkap</label>
-                  <input type="text" name="customer_name" class="form-control" placeholder="Nama pemesan" value="{{ old('customer_name', session('booking_step1.customer_name')) }}" required>
+                  <label class="form-label small">Nama Lengkap<span class="text-danger">*</span></label>
+                  <input type="text" name="customer_name" class="form-control @error('customer_name') is-invalid @enderror" placeholder="Nama pemesan" value="{{ old('customer_name', session('booking_step1.customer_name')) }}" required>
+                  @error('customer_name')
+                    <div class="invalid-feedback">{{ $message }}</div>
+                  @enderror
                 </div>
                 <div class="col-md-3">
-                  <label class="form-label small">Email</label>
-                  <input type="email" name="customer_email" class="form-control" placeholder="email@example.com" value="{{ old('customer_email', session('booking_step1.customer_email')) }}" required>
+                  <label class="form-label small">Email<span class="text-danger">*</span></label>
+                  <input type="email" name="customer_email" class="form-control @error('customer_email') is-invalid @enderror" placeholder="email@example.com" value="{{ old('customer_email', session('booking_step1.customer_email')) }}" required>
+                  @error('customer_email')
+                    <div class="invalid-feedback">{{ $message }}</div>
+                  @enderror
                 </div>
                 <div class="col-md-3">
-                  <label class="form-label small">No. Telepon</label>
-                  <input type="text" name="customer_phone" class="form-control" placeholder="08xx" value="{{ old('customer_phone', session('booking_step1.customer_phone')) }}" required>
+                  <label class="form-label small">No. Telepon<span class="text-danger">*</span></label>
+                  <input type="text" name="customer_phone" class="form-control @error('customer_phone') is-invalid @enderror" placeholder="08xx" value="{{ old('customer_phone', session('booking_step1.customer_phone')) }}" required>
+                  @error('customer_phone')
+                    <div class="invalid-feedback">{{ $message }}</div>
+                  @enderror
                 </div>
               </div>
 
@@ -299,26 +312,30 @@
     <div class="card-body">
       <div class="row g-3">
         <div class="col-md-4">
-          <label class="form-label small">Nama Penumpang</label>
+          <label class="form-label small">Nama Penumpang<span class="text-danger">*</span></label>
           <input type="text" name="passengers[{index}][passenger_name]" class="form-control form-control-sm" placeholder="Nama sesuai identitas" required>
+          <div class="invalid-feedback"></div>
         </div>
         <div class="col-md-2">
-          <label class="form-label small">Jenis ID</label>
+          <label class="form-label small">Jenis ID<span class="text-danger">*</span></label>
           <select name="passengers[{index}][passenger_id_type]" class="form-select form-select-sm" required>
             <option value="ktp">KTP</option>
             <option value="passport">Paspor</option>
             <option value="sim">SIM</option>
           </select>
+          <div class="invalid-feedback"></div>
         </div>
         <div class="col-md-3">
-          <label class="form-label small">No. ID</label>
+          <label class="form-label small">No. ID<span class="text-danger">*</span></label>
           <input type="text" name="passengers[{index}][passenger_id_number]" class="form-control form-control-sm" placeholder="Nomor identitas" required>
+          <div class="invalid-feedback"></div>
         </div>
         <div class="col-md-3">
-          <label class="form-label small">Kursi</label>
+          <label class="form-label small">Kursi<span class="text-danger">*</span></label>
           <select name="passengers[{index}][seat_id]" class="form-select form-select-sm seat-select" required>
             <option value="">Pilih Kursi</option>
           </select>
+          <div class="invalid-feedback"></div>
         </div>
       </div>
     </div>
@@ -327,10 +344,11 @@
 @endsection
 
 @push('scripts')
-<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 <div id="booking-config"
      data-get-seats-url="{{ route('landing.get-seats') }}"
      data-schedule-id="{{ $schedule->id }}"
-     data-base-price="{{ $schedule->base_price }}"></div>
+     data-base-price="{{ $schedule->base_price }}"
+     data-old-passengers='@json(old('passengers', []))'
+     data-errors='@json($errors->toArray())'></div>
 <script src="{{ asset('js/booking-step1.js') }}"></script>
 @endpush
