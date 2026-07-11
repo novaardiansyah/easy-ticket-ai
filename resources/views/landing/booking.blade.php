@@ -262,7 +262,7 @@
         <div class="card border-0 shadow-sm mb-3">
           <div class="card-body py-3">
             <div class="row align-items-center g-3">
-              <div class="col-md-7">
+              <div class="col-md-4">
                 <div class="fw-bold fs-5">{{ $schedule->train->name }} ({{ $schedule->train->code }})</div>
                 <div class="small text-secondary">
                   {{ $schedule->route->originStation->city }} ({{ $schedule->route->originStation->code }})
@@ -270,11 +270,28 @@
                   {{ $schedule->route->destinationStation->city }} ({{ $schedule->route->destinationStation->code }})
                 </div>
               </div>
-              <div class="col-md-3 text-secondary small">
-                <div><i class="bi bi-calendar3 me-1"></i>{{ \Carbon\Carbon::parse($schedule->departure_time)->format('d M Y') }} &rarr; {{ \Carbon\Carbon::parse($schedule->arrival_time)->format('d M Y') }}</div>
-                <div><i class="bi bi-clock me-1"></i>{{ \Carbon\Carbon::parse($schedule->departure_time)->format('H:i') }} WIB &rarr; {{ \Carbon\Carbon::parse($schedule->arrival_time)->format('H:i') }} WIB</div>
+              <div class="col-md-4">
+                <div class="d-flex justify-content-center align-items-center small">
+                  <div class="text-center">
+                    <div class="fw-semibold">
+                      {{ \Carbon\Carbon::parse($schedule->departure_time)->format('d M Y') }}
+                    </div>
+                    <div class="text-secondary" style="font-size: 0.75rem; line-height: 1.2;">
+                    	{{ \Carbon\Carbon::parse($schedule->departure_time)->format('H.i') }} WIB
+                    </div>
+                  </div>
+                  <div class="text-muted px-3">&rarr;</div>
+                  <div class="text-center">
+                    <div class="fw-semibold">
+                    	{{ \Carbon\Carbon::parse($schedule->arrival_time)->format('d M Y') }}
+                    </div>
+                    <div class="text-secondary" style="font-size: 0.75rem; line-height: 1.2;">
+                    	{{ \Carbon\Carbon::parse($schedule->arrival_time)->format('H.i') }} WIB
+                    </div>
+                  </div>
+                </div>
               </div>
-              <div class="col-md-2 text-md-end">
+              <div class="col-md-4 text-md-end">
                 <span class="fw-bold text-primary fs-5">{{ formatRupiah($schedule->base_price) }}</span>
                 <div class="small text-secondary">per tiket</div>
               </div>
@@ -377,11 +394,11 @@
                   </div>
                   <div class="summary-row">
                     <span class="summary-label">Keberangkatan</span>
-                    <span class="summary-value">{{ \Carbon\Carbon::parse($schedule->departure_time)->format('d M Y H:i') }} WIB</span>
+                    <span class="summary-value">{{ \Carbon\Carbon::parse($schedule->departure_time)->format('d M Y H.i') }} WIB</span>
                   </div>
                   <div class="summary-row">
                     <span class="summary-label">Estimasi Tiba</span>
-                    <span class="summary-value">{{ \Carbon\Carbon::parse($schedule->arrival_time)->format('d M Y H:i') }} WIB</span>
+                    <span class="summary-value">{{ \Carbon\Carbon::parse($schedule->arrival_time)->format('d M Y H.i') }} WIB</span>
                   </div>
                   <div class="summary-row">
                     <span class="summary-label">Jumlah Penumpang</span>
@@ -539,5 +556,5 @@
      data-get-seats-url="{{ route('landing.get-seats') }}"
      data-schedule-id="{{ $schedule->id }}"
      data-base-price="{{ $schedule->base_price }}"></div>
-<script src="{{ asset('js/booking.js') }}"></script>
+<script src="{{ asset('js/booking.js' . '?v1.1') }}"></script>
 @endpush

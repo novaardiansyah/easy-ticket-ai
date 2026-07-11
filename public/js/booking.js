@@ -27,7 +27,9 @@ window.addEventListener('DOMContentLoaded', function () {
       });
       $select.append($group);
     });
-  }
+	}
+  
+  function refreshAllSeatDropdowns() {
     const $selects = $('#passengers-container .seat-select');
     const taken = {};
     $selects.each(function () {
