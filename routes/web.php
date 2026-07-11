@@ -54,5 +54,17 @@ Route::middleware('auth')->group(function () {
     Route::get('bookings/get-seats', [BookingController::class, 'getSeats'])->name('bookings.get-seats');
     Route::resource('bookings', BookingController::class)->only(['index', 'show', 'create', 'store', 'update']);
     Route::resource('payments', PaymentController::class)->only(['index', 'show']);
+    });
   });
-});
+
+  Route::post('/webhook/deploy', function () {
+    $scriptPath = base_path('setup.sh');
+
+    if (!file_exists($scriptPath)) {
+      return response()->json(['status' => 'error', 'message' => 'Script not found'], 404);
+    }
+
+    $output = shell_exec('bash ' . escapeshellarg($scriptPath) . ' 2>&1');
+
+    return response()->json(['status' => 'ok', 'output' => $output]);
+  })->withoutMiddleware([\App\Http\Middleware\VerifyCsrfToken::class]);
