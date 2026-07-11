@@ -44,6 +44,19 @@ window.addEventListener('DOMContentLoaded', function () {
     }
   });
 
+  $('#swap-stations-btn').on('click', function () {
+    const $origin = $('#origin_station_id');
+    const $dest = $('#destination_station_id');
+    const originVal = $origin.val();
+    const destVal = $dest.val();
+
+    $origin.val(destVal);
+    $dest.val(originVal);
+
+    $origin.trigger('change');
+    $dest.trigger('change');
+  });
+
   if (flashSuccess) {
     Swal.fire({
       icon: 'success',
