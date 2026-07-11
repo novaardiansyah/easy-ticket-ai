@@ -35,9 +35,9 @@
               </select>
             </div>
             <div class="col-md-3">
-              <label class="form-label fw-semibold small">Tanggal Keberangkatan</label>
-              <input type="text" name="departure_date" id="departure_date" class="form-control bg-white" value="{{ $departureDate ?? '' }}" placeholder="Pilih Tanggal" required readonly style="background-color: #ffffff !important;">
-            </div>
+                          <label class="form-label fw-semibold small">Tanggal Keberangkatan</label>
+                          <input type="text" name="departure_date" id="departure_date" class="form-control bg-white" value="{{ $departureDate ?? '' }}" placeholder="Pilih Tanggal" required readonly style="background-color: #ffffff !important;">
+                        </div>
             <div class="col-md-3">
               <button type="submit" class="btn btn-primary w-100 py-2"><i class="bi bi-search me-2"></i>Cari</button>
             </div>

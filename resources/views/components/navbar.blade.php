@@ -117,14 +117,18 @@
 							<i class="bi bi-gear-fill me-2"></i>
 							Settings
 						</a>
+						<a href="{{ route('landing') }}" class="dropdown-item" target="_blank">
+							<i class="bi bi-house-fill me-2"></i>
+							Buka Website
+						</a>
 						<a href="#" class="dropdown-item" onclick="event.preventDefault(); document.getElementById('logout-form').submit();">
 							<i class="bi bi-box-arrow-right me-2"></i>
 							Logout
 						</a>
-						<form id="logout-form" action="{{ route('logout') }}" method="POST" class="d-none">
-							@csrf
-						</form>
-          </li>
+    						<form id="logout-form" action="{{ route('logout') }}" method="POST" class="d-none">
+    							@csrf
+    						</form>
+              </li>
         </ul>
       </li>
     </ul>
