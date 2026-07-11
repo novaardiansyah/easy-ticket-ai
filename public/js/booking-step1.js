@@ -13,6 +13,10 @@ window.addEventListener('DOMContentLoaded', function () {
   const oldPassengers = JSON.parse(configEl.dataset.oldPassengers || '[]');
   const errors = JSON.parse(configEl.dataset.errors || '{}');
 
+  // Get fake data for local environment auto-fill
+  const fakeData = JSON.parse(configEl.dataset.fakeData || '{}');
+  const appEnv = configEl.dataset.appEnv;
+
   let carriagesData = [];
   let passengerIndex = 0;
 
@@ -136,6 +140,42 @@ window.addEventListener('DOMContentLoaded', function () {
     }
   }
 
+  function applyFakeData() {
+    // Only apply fake data in local environment and when no old passengers exist
+    if (appEnv !== 'local' || oldPassengers.length > 0 || !fakeData.passengers || fakeData.passengers.length === 0) {
+      return false;
+    }
+
+    // Auto-fill customer fields
+    if (fakeData.customer_name) {
+      $('input[name="customer_name"]').val(fakeData.customer_name);
+    }
+    if (fakeData.customer_email) {
+      $('input[name="customer_email"]').val(fakeData.customer_email);
+    }
+    if (fakeData.customer_phone) {
+      $('input[name="customer_phone"]').val(fakeData.customer_phone);
+    }
+
+    // Auto-fill passenger fields (only 1 passenger)
+    const passenger = fakeData.passengers[0];
+    if (passenger) {
+      // Update the first (and only) passenger row
+      const $firstCard = $('#passengers-container .passenger-card').first();
+      if ($firstCard.length) {
+        $firstCard.find('input[name*="[passenger_name]"]').val(passenger.passenger_name || '');
+        $firstCard.find('select[name*="[passenger_id_type]"]').val(passenger.passenger_id_type || 'ktp');
+        $firstCard.find('input[name*="[passenger_id_number]"]').val(passenger.passenger_id_number || '');
+        if (passenger.seat_id) {
+          $firstCard.data('seat-id', passenger.seat_id);
+          $firstCard.find('select[name*="[seat_id]"]').val(passenger.seat_id);
+        }
+      }
+    }
+
+    return true;
+  }
+
   // Initialize: Load seats
   $.ajax({
     url: config.getSeatsUrl,
@@ -150,7 +190,11 @@ window.addEventListener('DOMContentLoaded', function () {
           addPassengerRow(passenger);
         });
       } else {
+        // Add first passenger row
         addPassengerRow();
+        
+        // Apply fake data for local environment
+        applyFakeData();
       }
 
       // Apply server-side validation errors

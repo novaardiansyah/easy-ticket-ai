@@ -8,6 +8,7 @@ use App\Models\Schedule;
 use App\Models\Seat;
 use App\Models\Station;
 use App\Services\BookingService;
+use Faker\Factory as FakerFactory;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
@@ -224,7 +225,45 @@ class LandingController extends Controller
     $schedule = Schedule::with(['train', 'route.originStation', 'route.destinationStation'])
       ->findOrFail($scheduleId);
 
-    return view('landing.booking-step1', compact('schedule'));
+    // Auto-fill with faker data when in local environment
+    $fakeData = null;
+    if (app()->environment('local')) {
+      $faker = FakerFactory::create('id_ID');
+
+      // Get available seats for this schedule
+      $bookedSeatIds = Passenger::whereHas('booking', function ($q) use ($schedule) {
+        $q->where('schedule_id', $schedule->id)
+          ->whereIn('status', ['pending', 'paid']);
+      })->pluck('seat_id')->toArray();
+
+      $availableSeats = Seat::whereHas('carriage.train.schedules', function ($q) use ($schedule) {
+        $q->where('schedules.id', $schedule->id);
+      })
+        ->whereNotIn('id', $bookedSeatIds)
+        ->where('status', 'available')
+        ->get();
+
+      $randomSeat = $availableSeats->isNotEmpty() ? $availableSeats->random() : null;
+
+      $ktpNumber = $faker->numerify(str_repeat('#', 16));
+
+      $fakeData = [
+        'customer_name'  => $faker->name(),
+        'customer_email' => $faker->email(),
+        'customer_phone' => '08' . $faker->numerify('##########'),
+        'passengers'     => [
+          [
+            'passenger_name'      => $faker->name(),
+            'passenger_id_type'   => $faker->randomElement(['ktp', 'passport', 'sim']),
+            'passenger_id_number' => $ktpNumber,
+            'seat_id'             => $randomSeat ? $randomSeat->id : null,
+            'seat_number'         => $randomSeat ? $randomSeat->seat_number : '',
+          ],
+        ],
+      ];
+    }
+
+    return view('landing.booking-step1', compact('schedule', 'fakeData'));
   }
 
   public function processBookingStep1(Request $request): RedirectResponse
