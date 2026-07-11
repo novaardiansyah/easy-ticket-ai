@@ -103,17 +103,23 @@ document.addEventListener('DOMContentLoaded', function () {
   var priceInput = document.getElementById('base_price');
   var priceHint = document.getElementById('base_price_hint');
 
+  function updatePriceHint() {
+    var val = priceInput.value.trim();
+    if (val !== '' && !isNaN(val) && Number(val) > 0) {
+      var parts = val.split(/[.,]/);
+      var decimals = parts.length > 1 ? parts[parts.length - 1].length : 0;
+      priceHint.textContent = formatRupiah(val, decimals);
+    } else {
+      priceHint.textContent = '';
+    }
+  }
+
   priceInput.addEventListener('input', function () {
     clearTimeout(debounceTimer);
-    debounceTimer = setTimeout(function () {
-      var val = priceInput.value.trim();
-      if (val !== '' && !isNaN(val) && Number(val) > 0) {
-        priceHint.textContent = formatRupiah(val);
-      } else {
-        priceHint.textContent = '';
-      }
-    }, 500);
+    debounceTimer = setTimeout(updatePriceHint, 500);
   });
+
+  updatePriceHint();
 });
 </script>
 @endpush
