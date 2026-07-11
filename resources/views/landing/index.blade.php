@@ -222,8 +222,9 @@
 
 @push('scripts')
 <div id="landing-config"
-     data-get-seats-url="{{ route('landing.get-seats') }}"
-     data-bookings-store-url="{{ route('landing.bookings.store') }}"
-     data-flash-success="{{ session('success') }}"></div>
-<script src="{{ asset('js/landing-index.js') }}"></script>
+	     data-get-seats-url="{{ route('landing.get-seats') }}"
+	     data-bookings-store-url="{{ route('landing.bookings.store') }}"
+	     data-flash-success="{{ session('success') }}"
+	     data-restore-search="true"></div>
+<script src="{{ asset('js/landing-index.js?v1.1') }}"></script>
 @endpush

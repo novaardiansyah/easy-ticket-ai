@@ -13,13 +13,14 @@ window.addEventListener('DOMContentLoaded', function () {
     altInput: true,
     altFormat: 'l, d F Y',
     dateFormat: 'Y-m-d',
-    disableMobile: true
+    disableMobile: true,
+    onChange: function () { saveSearchToLocalStorage(); }
   });
 
   $('#destination_station_id').on('change', function () {
     const val = $(this).val();
     if (val && val === $('#origin_station_id').val()) {
-      $('#destination_station_id').val('').trigger('change');
+      $(this).val('').trigger('change');
       Swal.fire({
         icon: 'warning',
         title: 'Perhatian',
@@ -28,12 +29,13 @@ window.addEventListener('DOMContentLoaded', function () {
         showConfirmButton: false
       });
     }
+    saveSearchToLocalStorage();
   });
 
   $('#origin_station_id').on('change', function () {
     const val = $(this).val();
     if (val && val === $('#destination_station_id').val()) {
-      $('#origin_station_id').val('').trigger('change');
+      $(this).val('').trigger('change');
       Swal.fire({
         icon: 'warning',
         title: 'Perhatian',
@@ -42,6 +44,7 @@ window.addEventListener('DOMContentLoaded', function () {
         showConfirmButton: false
       });
     }
+    saveSearchToLocalStorage();
   });
 
   $('#swap-stations-btn').on('click', function () {
@@ -55,6 +58,55 @@ window.addEventListener('DOMContentLoaded', function () {
 
     $origin.trigger('change');
     $dest.trigger('change');
+  });
+
+	function saveSearchToLocalStorage() {
+    const data = {
+      origin_station_id: $('#origin_station_id').val(),
+      destination_station_id: $('#destination_station_id').val(),
+      departure_date: $('#departure_date').val()
+    };
+    localStorage.setItem('easy_ticket_search', JSON.stringify(data));
+  }
+
+  function restoreSearchFromLocalStorage() {
+    const saved = localStorage.getItem('easy_ticket_search');
+    if (!saved) return;
+    try {
+      const data = JSON.parse(saved);
+      if (data.origin_station_id) {
+        $('#origin_station_id').val(data.origin_station_id).trigger('change');
+      }
+      if (data.destination_station_id) {
+        $('#destination_station_id').val(data.destination_station_id).trigger('change');
+      }
+      if (data.departure_date) {
+        var fp = document.querySelector('#departure_date');
+        if (fp && fp._flatpickr) {
+          fp._flatpickr.setDate(data.departure_date, true);
+        } else {
+          $('#departure_date').val(data.departure_date);
+        }
+      }
+    } catch (e) {
+      localStorage.removeItem('easy_ticket_search');
+    }
+  }
+
+  function doRestore() {
+    var restoreSearch = configEl.dataset.restoreSearch || '';
+    if (restoreSearch) {
+      restoreSearchFromLocalStorage();
+    }
+  }
+
+  doRestore();
+  window.addEventListener('pageshow', function (e) {
+    if (e.persisted) doRestore();
+  });
+
+  $('#search-form').on('submit', function () {
+    saveSearchToLocalStorage();
   });
 
   if (flashSuccess) {
