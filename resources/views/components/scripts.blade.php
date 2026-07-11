@@ -99,4 +99,7 @@
 <script src="{{ asset('js/dataTables.bootstrap5.min.js') }}"></script>
 
 <script src="{{ asset('js/utils.js') }}"></script>
+<script src="{{ asset('js/plugins/select2/select2.min.js') }}"></script>
+<script src="{{ asset('js/plugins/datepicker/flatpickr.min.js') }}"></script>
+<script src="{{ asset('js/plugins/datepicker/flatpickr-id.js') }}"></script>
 @stack('scripts')

@@ -48,6 +48,9 @@
 
 <link rel="stylesheet" href="{{ template('css/adminlte.css') }}" />
 <link rel="stylesheet" href="{{ asset('css/dataTables.bootstrap5.min.css') }}" />
+<link rel="stylesheet" href="{{ asset('css/plugins/select2/select2.min.css') }}" />
+<link rel="stylesheet" href="{{ asset('css/plugins/select2/select2-bootstrap-5-theme.min.css') }}" />
+<link rel="stylesheet" href="{{ asset('css/plugins/datepicker/flatpickr.min.css') }}" />
 <style>
   div.dataTables_wrapper div.dataTables_processing {
     background-color: var(--bs-body-bg);
